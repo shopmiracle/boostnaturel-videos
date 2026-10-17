@@ -1,0 +1,18 @@
+{
+ "style": "burst",
+ "image": "img/d7-whey-nutrend.png",
+ "shape": "jar",
+ "bulge": 0.12,
+ "height": 2.1,
+ "bg": "#060303",
+ "glow": [
+  "#9e1b1b",
+  "#3a0909"
+ ],
+ "rim": [
+  "#ff3b30",
+  "#ffc94d"
+ ],
+ "accent": "#ffd166",
+ "seed": 77
+}

@@ -1,0 +1,19 @@
+{
+ "style": "levitate",
+ "image": "img/d2-shaker-osavi-bleu.png",
+ "shape": "jar",
+ "bulge": 0.08,
+ "height": 2.4,
+ "bg": "#020308",
+ "glow": [
+  "#1f4fd1",
+  "#0b1a4d"
+ ],
+ "rim": [
+  "#3d7bff",
+  "#00d1ff"
+ ],
+ "accent": "#4da3ff",
+ "seed": 22,
+ "keyPower": 70
+}

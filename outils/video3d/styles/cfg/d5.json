@@ -1,0 +1,21 @@
+{
+ "style": "gold",
+ "image": "img/d5-isolate-whey-weider.png",
+ "shape": "pouch",
+ "bulge": 0.15,
+ "height": 2.2,
+ "clearcoat": 0.6,
+ "bg": "#050403",
+ "floor": "#080706",
+ "floorRough": 0.25,
+ "glow": [
+  "#7a5212",
+  "#2a1a05"
+ ],
+ "rim": [
+  "#ffb347",
+  "#ffd27a"
+ ],
+ "accent": "#ffcc66",
+ "seed": 55
+}

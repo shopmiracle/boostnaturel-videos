@@ -1,0 +1,29 @@
+{
+ "style": "glacial",
+ "camera": "default",
+ "image": "img/d1-clear-isolate-weider.png",
+ "shape": "jar",
+ "bulge": 0.1,
+ "height": 2.0,
+ "bg": "#020507",
+ "glow": [
+  "#1b6f8f",
+  "#0b2b3a"
+ ],
+ "rim": [
+  "#66d9ff",
+  "#ff9a5c"
+ ],
+ "accent": "#7fe3ff",
+ "drop": [
+  [
+   "ice",
+   10
+  ],
+  [
+   "peach",
+   4
+  ]
+ ],
+ "seed": 11
+}

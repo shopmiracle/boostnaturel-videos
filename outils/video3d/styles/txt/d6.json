@@ -1,0 +1,75 @@
+{
+ "style": "drop",
+ "accent": "#ff4f8b",
+ "root": 220.0,
+ "seed": 6,
+ "hook": [
+  [
+   "CRÈME DE RIZ",
+   "B",
+   72,
+   "W",
+   14
+  ],
+  [
+   "OstroVit · framboise · 1 kg",
+   "M",
+   40,
+   "ROSE",
+   0
+  ]
+ ],
+ "mid": [
+  [
+   "Une farine de riz précuite",
+   "M",
+   42,
+   "W",
+   10
+  ],
+  [
+   "prête en quelques minutes",
+   "B",
+   52,
+   "ACC",
+   12
+  ],
+  [
+   "dans de l'eau chaude ou du lait",
+   "R",
+   34,
+   "W",
+   0
+  ]
+ ],
+ "end": [
+  [
+   "Consultez la liste des ingrédients",
+   "R",
+   32,
+   "W",
+   6
+  ],
+  [
+   "et des allergènes sur l'emballage.",
+   "R",
+   32,
+   "W",
+   14
+  ],
+  [
+   "À intégrer dans une alimentation variée",
+   "R",
+   32,
+   "W",
+   6
+  ],
+  [
+   "et équilibrée et un mode de vie sain.",
+   "R",
+   32,
+   "W",
+   0
+  ]
+ ]
+}

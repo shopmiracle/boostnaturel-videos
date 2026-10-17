@@ -1,0 +1,21 @@
+{
+ "style": "podium",
+ "image": "img/d4-barre-weider.png",
+ "shape": "box",
+ "bulge": 0.02,
+ "height": 1.6,
+ "maxWidth": 2.0,
+ "bg": "#050308",
+ "glow": [
+  "#6b1a8f",
+  "#25093a"
+ ],
+ "rim": [
+  "#ff2bd6",
+  "#2be3ff"
+ ],
+ "accent": "#ffd84d",
+ "seed": 44,
+ "keyPower": 55,
+ "exposure": 0.9
+}

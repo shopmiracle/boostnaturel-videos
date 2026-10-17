@@ -1,0 +1,97 @@
+{
+ "style": "scan",
+ "accent": "#ffe14d",
+ "root": 196.0,
+ "seed": 3,
+ "hook": [
+  [
+   "BCAA 4:1:1 POWDER",
+   "B",
+   68,
+   "W",
+   14
+  ],
+  [
+   "Nutrend · ananas · 500 g",
+   "M",
+   40,
+   "ROSE",
+   0
+  ]
+ ],
+ "mid": [
+  [
+   "4:1:1, c'est le rapport",
+   "M",
+   42,
+   "W",
+   10
+  ],
+  [
+   "leucine · isoleucine · valine",
+   "B",
+   48,
+   "ACC",
+   12
+  ],
+  [
+   "4 parts de leucine pour 1 d'isoleucine",
+   "R",
+   32,
+   "W",
+   6
+  ],
+  [
+   "et 1 de valine",
+   "R",
+   32,
+   "W",
+   0
+  ]
+ ],
+ "end": [
+  [
+   "Complément alimentaire.",
+   "B",
+   38,
+   "W",
+   6
+  ],
+  [
+   "Contient des édulcorants.",
+   "B",
+   38,
+   "W",
+   14
+  ],
+  [
+   "Déconseillé aux enfants, aux femmes",
+   "R",
+   32,
+   "W",
+   6
+  ],
+  [
+   "enceintes et allaitantes.",
+   "R",
+   32,
+   "W",
+   6
+  ],
+  [
+   "Ne pas dépasser la dose journalière recommandée.",
+   "R",
+   30,
+   "W",
+   6
+  ],
+  [
+   "Ne remplace pas une alimentation variée.",
+   "R",
+   32,
+   "W",
+   0
+  ]
+ ],
+ "end_y": 1360
+}

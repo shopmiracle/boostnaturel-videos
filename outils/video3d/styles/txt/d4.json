@@ -1,0 +1,75 @@
+{
+ "style": "podium",
+ "accent": "#ffd84d",
+ "root": 246.94,
+ "seed": 4,
+ "hook": [
+  [
+   "32% HIGH PROTEIN BAR",
+   "B",
+   64,
+   "W",
+   14
+  ],
+  [
+   "Weider · banane · 12 barres de 60 g",
+   "M",
+   38,
+   "ROSE",
+   0
+  ]
+ ],
+ "mid": [
+  [
+   "Une barre protéinée",
+   "M",
+   44,
+   "W",
+   10
+  ],
+  [
+   "à emporter",
+   "B",
+   60,
+   "ACC",
+   8
+  ],
+  [
+   "pour une collation",
+   "M",
+   44,
+   "W",
+   0
+  ]
+ ],
+ "end": [
+  [
+   "Contient du lait, du soja et de l'œuf.",
+   "B",
+   36,
+   "W",
+   14
+  ],
+  [
+   "Peut contenir des traces de gluten,",
+   "R",
+   32,
+   "W",
+   6
+  ],
+  [
+   "d'arachides et de fruits à coque.",
+   "R",
+   32,
+   "W",
+   6
+  ],
+  [
+   "À conserver au frais (8 °C à 20 °C).",
+   "R",
+   32,
+   "W",
+   0
+  ]
+ ]
+}

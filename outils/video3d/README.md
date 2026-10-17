@@ -9,3 +9,9 @@ Chaîne : packshot Shopify -> détourage -> scène three.js r170 (Chromium sans 
 5. `python3 -I finish.py out/scene.mp4 out/scene.bounces.json out/final.mp4`
 
 Les textes (dose, avertissements) viennent de l'étiquette du produit et se modifient dans `finish.py`. Aucune allégation de santé.
+
+## Styles (`styles/`)
+`scene.html?cfg=<nom>` charge `cfg/<nom>.json` : glacial, levitate, scan, podium, gold, drop, burst. Textes et son : `txt/<nom>.json` + `finish.py`. `cutout.py` complète les zones blanches du produit par l'enveloppe convexe.
+
+## Canette 360° (`canette/`)
+`unwrap.py` déroule l'étiquette d'une photo de face (±78°) et mesure le profil ; le dos est rempli avec la couleur de fond de chaque ligne, sans texte inventé. `scene.html` : 8 plans coupés (silhouette, rotation 360°, gros plan gouttes, dessous, chute, angles, alignement de 3 canettes).

@@ -1,0 +1,83 @@
+{
+ "style": "gold",
+ "accent": "#ffcc66",
+ "root": 207.65,
+ "seed": 5,
+ "hook": [
+  [
+   "ISOLATE WHEY 100 CFM",
+   "B",
+   64,
+   "W",
+   14
+  ],
+  [
+   "Weider · banane · 420 g",
+   "M",
+   40,
+   "ROSE",
+   0
+  ]
+ ],
+ "mid": [
+  [
+   "96 % d'isolat",
+   "B",
+   60,
+   "ACC",
+   8
+  ],
+  [
+   "de protéines de lactosérum",
+   "M",
+   42,
+   "W",
+   14
+  ],
+  [
+   "30 g dans 200 ml d'eau · 1 portion par jour",
+   "R",
+   30,
+   "W",
+   0
+  ]
+ ],
+ "end": [
+  [
+   "Contient du lait.",
+   "B",
+   38,
+   "W",
+   6
+  ],
+  [
+   "Contient des édulcorants.",
+   "B",
+   38,
+   "W",
+   14
+  ],
+  [
+   "Ne pas dépasser la dose journalière recommandée.",
+   "R",
+   30,
+   "W",
+   6
+  ],
+  [
+   "Tenir hors de portée des enfants.",
+   "R",
+   32,
+   "W",
+   6
+  ],
+  [
+   "Ne remplace pas une alimentation variée.",
+   "R",
+   32,
+   "W",
+   0
+  ]
+ ],
+ "end_y": 1370
+}

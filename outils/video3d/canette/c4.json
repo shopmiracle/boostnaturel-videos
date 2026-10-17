@@ -1,0 +1,121 @@
+{
+ "style": "can",
+ "accent": "#2f6bff",
+ "root": 293.66,
+ "major": true,
+ "seed": 44,
+ "t0": 1.8,
+ "cuts": [
+  3.4,
+  5.0,
+  6.6,
+  8.4,
+  11.2,
+  12.8
+ ],
+ "hook_box": true,
+ "hook_y": 210,
+ "windows": {
+  "hook": [
+   0.3,
+   3.3
+  ],
+  "mid": [
+   8.5,
+   11.15
+  ],
+  "end": [
+   13.0,
+   16.6
+  ],
+  "brand": [
+   13.0,
+   16.6
+  ]
+ },
+ "hook": [
+  [
+   "C4 ENERGY DRINK",
+   "B",
+   68,
+   "W",
+   12
+  ],
+  [
+   "Cellucor · Frozen Bombsicle · 500 ml",
+   "M",
+   38,
+   "W",
+   0
+  ]
+ ],
+ "mid": [
+  [
+   "Saveur Frozen Bombsicle",
+   "B",
+   50,
+   "ACC",
+   10
+  ],
+  [
+   "Boîte de 12 canettes de 500 ml",
+   "M",
+   40,
+   "W",
+   8
+  ],
+  [
+   "À boire bien frais",
+   "M",
+   40,
+   "W",
+   0
+  ]
+ ],
+ "mid_y": 165,
+ "end": [
+  [
+   "Teneur élevée en caféine.",
+   "B",
+   38,
+   "W",
+   6
+  ],
+  [
+   "Déconseillé aux enfants et aux femmes",
+   "R",
+   32,
+   "W",
+   6
+  ],
+  [
+   "enceintes ou allaitantes.",
+   "R",
+   32,
+   "W",
+   10
+  ],
+  [
+   "Contient des édulcorants.",
+   "B",
+   34,
+   "W",
+   10
+  ],
+  [
+   "Ne pas associer à d'autres sources de caféine.",
+   "R",
+   30,
+   "W",
+   6
+  ],
+  [
+   "Respectez la quantité journalière indiquée.",
+   "R",
+   30,
+   "W",
+   0
+  ]
+ ],
+ "end_y": 1385
+}

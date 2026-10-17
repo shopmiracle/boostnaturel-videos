@@ -1,0 +1,89 @@
+{
+ "style": "glacial",
+ "accent": "#7fe3ff",
+ "root": 233.08,
+ "seed": 1,
+ "hook": [
+  [
+   "CLEAR ISOLATE",
+   "B",
+   72,
+   "W",
+   14
+  ],
+  [
+   "Weider · thé glacé pêche · 500 g",
+   "M",
+   40,
+   "ROSE",
+   0
+  ]
+ ],
+ "mid": [
+  [
+   "Une clear whey",
+   "M",
+   42,
+   "W",
+   10
+  ],
+  [
+   "qui se boit comme",
+   "B",
+   56,
+   "ACC",
+   6
+  ],
+  [
+   "une boisson fruitée",
+   "B",
+   56,
+   "ACC",
+   16
+  ],
+  [
+   "Une dose dans de l'eau bien froide",
+   "R",
+   34,
+   "W",
+   0
+  ]
+ ],
+ "end": [
+  [
+   "Contient du lait.",
+   "B",
+   38,
+   "W",
+   14
+  ],
+  [
+   "Respectez la dose recommandée",
+   "R",
+   32,
+   "W",
+   6
+  ],
+  [
+   "indiquée sur l'emballage.",
+   "R",
+   32,
+   "W",
+   6
+  ],
+  [
+   "À intégrer dans une alimentation variée",
+   "R",
+   32,
+   "W",
+   6
+  ],
+  [
+   "et équilibrée et un mode de vie sain.",
+   "R",
+   32,
+   "W",
+   0
+  ]
+ ]
+}

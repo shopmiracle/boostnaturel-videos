@@ -1,0 +1,18 @@
+{
+ "style": "scan",
+ "image": "img/d3-bcaa-nutrend.png",
+ "shape": "jar",
+ "bulge": 0.12,
+ "height": 2.0,
+ "bg": "#050502",
+ "glow": [
+  "#8a7a00",
+  "#2b2600"
+ ],
+ "rim": [
+  "#ffd400",
+  "#ffffff"
+ ],
+ "accent": "#ffe14d",
+ "seed": 33
+}

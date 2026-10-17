@@ -1,0 +1,25 @@
+{
+ "style": "drop",
+ "camera": "default",
+ "image": "img/d6-creme-de-riz-ostrovit.png",
+ "shape": "pouch",
+ "bulge": 0.15,
+ "height": 2.2,
+ "bg": "#070205",
+ "glow": [
+  "#b3124f",
+  "#4a0720"
+ ],
+ "rim": [
+  "#ff2d6f",
+  "#ff7aa8"
+ ],
+ "accent": "#ff4f8b",
+ "drop": [
+  [
+   "raspberry",
+   18
+  ]
+ ],
+ "seed": 66
+}

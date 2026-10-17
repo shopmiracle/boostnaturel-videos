@@ -1,0 +1,68 @@
+{
+ "style": "levitate",
+ "accent": "#4da3ff",
+ "root": 261.63,
+ "seed": 2,
+ "hook": [
+  [
+   "SHAKER OSAVI",
+   "B",
+   72,
+   "W",
+   14
+  ],
+  [
+   "Bleu · 700 ml",
+   "M",
+   40,
+   "ROSE",
+   0
+  ]
+ ],
+ "mid": [
+  [
+   "Versez d'abord le liquide,",
+   "M",
+   44,
+   "W",
+   10
+  ],
+  [
+   "puis la poudre.",
+   "B",
+   58,
+   "ACC",
+   10
+  ],
+  [
+   "Fermez bien et secouez.",
+   "M",
+   44,
+   "W",
+   0
+  ]
+ ],
+ "end": [
+  [
+   "Rincez après chaque utilisation.",
+   "B",
+   38,
+   "W",
+   14
+  ],
+  [
+   "Lavez à l'eau tiède savonneuse",
+   "R",
+   32,
+   "W",
+   6
+  ],
+  [
+   "et laissez sécher ouvert.",
+   "R",
+   32,
+   "W",
+   0
+  ]
+ ]
+}

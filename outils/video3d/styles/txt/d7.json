@@ -1,0 +1,83 @@
+{
+ "style": "burst",
+ "accent": "#ffd166",
+ "root": 185.0,
+ "seed": 7,
+ "hook": [
+  [
+   "100% WHEY PROTEIN",
+   "B",
+   68,
+   "W",
+   14
+  ],
+  [
+   "Nutrend · ananas + noix de coco · 2,25 kg",
+   "M",
+   36,
+   "ROSE",
+   0
+  ]
+ ],
+ "mid": [
+  [
+   "15 saveurs au choix",
+   "B",
+   58,
+   "ACC",
+   12
+  ],
+  [
+   "à mélanger au shaker",
+   "M",
+   42,
+   "W",
+   8
+  ],
+  [
+   "avec de l'eau ou du lait",
+   "M",
+   42,
+   "W",
+   0
+  ]
+ ],
+ "end": [
+  [
+   "Contient du lait.",
+   "B",
+   38,
+   "W",
+   14
+  ],
+  [
+   "Respectez la dose recommandée",
+   "R",
+   32,
+   "W",
+   6
+  ],
+  [
+   "indiquée sur l'emballage.",
+   "R",
+   32,
+   "W",
+   6
+  ],
+  [
+   "Tenir hors de portée des jeunes enfants.",
+   "R",
+   32,
+   "W",
+   6
+  ],
+  [
+   "À intégrer dans une alimentation variée.",
+   "R",
+   32,
+   "W",
+   0
+  ]
+ ],
+ "end_y": 1370
+}
