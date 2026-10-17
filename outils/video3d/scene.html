@@ -1,0 +1,172 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}</style>
+<script type="importmap">{"imports":{"three":"./three.module.js"}}</script></head>
+<body>
+<script type="module">
+import * as THREE from 'three';
+import { RoomEnvironment } from './RoomEnvironment.js';
+
+const W = 1080, H = 1920, FPS = 30, DUR = 16, N = DUR * FPS;
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1); renderer.setSize(W, H);
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.0;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x030202);
+scene.fog = new THREE.Fog(0x030202, 10, 26);
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+scene.environmentIntensity = 0.0;
+
+const camera = new THREE.PerspectiveCamera(32, W / H, 0.1, 60);
+
+// ---------- seeded RNG ----------
+let s = 1234567;
+const rnd = () => { s |= 0; s = s + 0x6D2B79F5 | 0; let t = Math.imul(s ^ s >>> 15, 1 | s); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+const smooth = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+
+// ---------- textures ----------
+const loader = new THREE.TextureLoader();
+const pouchTex = await loader.loadAsync('pouch.png');
+pouchTex.colorSpace = THREE.SRGBColorSpace; pouchTex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+const radial = (stops, size = 512) => {
+  const c = document.createElement('canvas'); c.width = c.height = size; const g = c.getContext('2d');
+  const gr = g.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
+  stops.forEach(([o, col]) => gr.addColorStop(o, col)); g.fillStyle = gr; g.fillRect(0, 0, size, size);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
+};
+
+// ---------- backdrop glow ----------
+const glowMat = new THREE.MeshBasicMaterial({ map: radial([[0, '#b3121f'], [0.35, '#5a0710'], [0.7, '#1a0205'], [1, '#000000']]), color: 0x000000, fog: false });
+const glow = new THREE.Mesh(new THREE.PlaneGeometry(26, 26), glowMat); glow.position.set(0, 2.0, -7); scene.add(glow);
+
+// ---------- floor ----------
+const floor = new THREE.Mesh(new THREE.PlaneGeometry(60, 60),
+  new THREE.MeshStandardMaterial({ color: 0x0c0909, roughness: 0.5, metalness: 0.15, transparent: true, opacity: 0.93 }));
+floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; floor.renderOrder = 2; scene.add(floor);
+
+// ---------- pouch ----------
+const PH = 2.2, PW = PH * 570 / 767;
+function pouchGeo(sign) {
+  const g = new THREE.PlaneGeometry(PW, PH, 48, 48); const p = g.attributes.position;
+  for (let i = 0; i < p.count; i++) {
+    const u = p.getX(i) / PW + 0.5, v = p.getY(i) / PH + 0.5;
+    p.setZ(i, sign * 0.15 * Math.pow(Math.max(0, Math.sin(Math.PI * u)), 0.7) * Math.pow(Math.max(0, Math.sin(Math.PI * Math.min(1, v * 1.05))), 0.45));
+  }
+  g.computeVertexNormals(); return g;
+}
+const front = new THREE.MeshPhysicalMaterial({ map: pouchTex, alphaTest: 0.5, roughness: 0.38, clearcoat: 0.3, clearcoatRoughness: 0.35 });
+const back = new THREE.MeshStandardMaterial({ map: pouchTex, color: 0x3a0508, alphaTest: 0.5, roughness: 0.6, side: THREE.BackSide });
+const depthMat = new THREE.MeshDepthMaterial({ depthPacking: THREE.RGBADepthPacking, map: pouchTex, alphaTest: 0.5 });
+const pouch = new THREE.Group();
+const pf = new THREE.Mesh(pouchGeo(1), front); const pb = new THREE.Mesh(pouchGeo(-1), back);
+for (const m of [pf, pb]) { m.castShadow = true; m.customDepthMaterial = depthMat; pouch.add(m); }
+pouch.position.set(0, PH / 2, 0); scene.add(pouch);
+const refl = pouch.clone(); refl.scale.y = -1; refl.position.y = -PH / 2; refl.traverse(o => { o.castShadow = false; }); scene.add(refl);
+
+// ---------- lights ----------
+scene.add(new THREE.AmbientLight(0xffffff, 0.05));
+const rimL = new THREE.SpotLight(0xff1428, 0, 14, 0.6, 0.7, 1.5); rimL.position.set(-3.2, 3.2, -2.6); rimL.target = pouch; scene.add(rimL);
+const rimR = new THREE.SpotLight(0xff2a3a, 0, 14, 0.6, 0.7, 1.5); rimR.position.set(3.2, 2.6, -2.6); rimR.target = pouch; scene.add(rimR);
+const key = new THREE.SpotLight(0xfff0e4, 0, 20, 0.42, 0.65, 1.5); key.position.set(-2.4, 4.8, 4.8); key.target = pouch;
+key.castShadow = true; key.shadow.mapSize.set(1024, 1024); key.shadow.bias = -0.0004; key.shadow.radius = 4; scene.add(key);
+const fill = new THREE.PointLight(0xffd2c4, 0, 12, 1.5); fill.position.set(2.8, 1.6, 3.6); scene.add(fill);
+
+// ---------- cherries (physique précalculée, déterministe) ----------
+const cherryGeo = (() => {
+  const r = 0.115, g = new THREE.SphereGeometry(r, 40, 28); const p = g.attributes.position;
+  for (let i = 0; i < p.count; i++) {
+    let x = p.getX(i), y = p.getY(i), z = p.getZ(i); const d2 = x * x + z * z;
+    y *= 0.92; if (y > 0) y -= 0.035 * Math.exp(-d2 / (0.045 * 0.045)); p.setXYZ(i, x * 1.04, y, z);
+  }
+  g.computeVertexNormals(); return g;
+})();
+const stemGeo = new THREE.TubeGeometry(new THREE.CatmullRomCurve3([new THREE.Vector3(0, 0.07, 0), new THREE.Vector3(0.015, 0.17, 0.01), new THREE.Vector3(0.05, 0.27, 0.0), new THREE.Vector3(0.09, 0.33, -0.01)]), 16, 0.007, 6);
+const cherryMat = new THREE.MeshPhysicalMaterial({ color: 0x6a0610, roughness: 0.16, clearcoat: 1, clearcoatRoughness: 0.06 });
+const stemMat = new THREE.MeshStandardMaterial({ color: 0x5c6a2c, roughness: 0.7 });
+const NC = 14, R = 0.115, G = 3.0, DT = 1 / 600;
+const cherries = [], traj = [], bounces = [];
+for (let i = 0; i < NC; i++) {
+  const m = new THREE.Group(); const b = new THREE.Mesh(cherryGeo, cherryMat); const st = new THREE.Mesh(stemGeo, stemMat);
+  b.castShadow = st.castShadow = true; m.add(b, st); m.visible = false; scene.add(m); cherries.push(m);
+  const side = i % 2 ? 1 : -1, frontRow = i < 8;
+  const st0 = 3.3 + i * 0.17 + rnd() * 0.12;
+  let x = side * (frontRow ? 0.92 + rnd() * 0.33 : 0.55 + rnd() * 0.8), z = frontRow ? 0.3 + rnd() * 0.9 : -0.5 - rnd() * 0.9;
+  let y = 3.6 + rnd() * 1.4, vx = side * rnd() * 0.06, vz = (rnd() - 0.5) * 0.08, vy = -0.3;
+  const ax = new THREE.Vector3(rnd() - 0.5, rnd() - 0.5, rnd() - 0.5).normalize(); let w = 1.5 + rnd() * 2.5, ang = rnd() * 6.28;
+  const frames = []; let t = 0, nb = 0, rest = false;
+  for (let f = 0; f < N; f++) {
+    const tf = f / FPS;
+    while (t < tf) {
+      if (t >= st0 && !rest) {
+        vy -= G * DT; x += vx * DT; y += vy * DT; z += vz * DT; ang += w * DT;
+        if (y < R) { y = R; if (Math.abs(vy) > 0.25 && nb < 3) { bounces.push({ t, v: Math.abs(vy) }); vy = -vy * 0.36; vx *= 0.6; vz *= 0.6; w *= 0.55; nb++; } else { vy = 0; rest = true; } }
+      }
+      t += DT;
+    }
+    frames.push([x, y, z, ang, tf >= st0]);
+  }
+  traj.push({ frames, ax });
+}
+
+// ---------- poudre (spirale douce) ----------
+const NP = 2400, pPos = new Float32Array(NP * 3), pPar = [];
+for (let i = 0; i < NP; i++) pPar.push({ a0: rnd() * 6.28, r0: 0.25 + rnd() * 1.0, st: 4.3 + rnd() * 1.6, vy: 0.3 + rnd() * 0.35, ph: rnd() * 6.28 });
+const pGeo = new THREE.BufferGeometry(); pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+const pMat = new THREE.PointsMaterial({ size: 0.075, map: radial([[0, 'rgba(255,255,255,1)'], [0.4, 'rgba(255,220,226,0.5)'], [1, 'rgba(255,200,210,0)']], 64), color: 0xffffff, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: 0 });
+const powder = new THREE.Points(pGeo, pMat); scene.add(powder);
+
+// ---------- poussières dans la lumière ----------
+const ND = 380, dPos = new Float32Array(ND * 3), dPar = [];
+for (let i = 0; i < ND; i++) dPar.push([(rnd() - 0.5) * 4, rnd() * 3.5, (rnd() - 0.5) * 4, rnd() * 6.28]);
+const dGeo = new THREE.BufferGeometry(); dGeo.setAttribute('position', new THREE.BufferAttribute(dPos, 3));
+const dMat = new THREE.PointsMaterial({ size: 0.018, map: pMat.map, color: 0xfff2e8, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: 0 });
+scene.add(new THREE.Points(dGeo, dMat));
+
+// ---------- caméra ----------
+const camKeys = [[0, 0, 1.3, 11.5], [3.5, 0, 1.2, 9.6], [7, 1.7, 1.3, 7.6], [10.5, 2.4, 1.2, 6.6], [13, 0.7, 1.25, 8.2], [16, 0, 1.3, 9.0]];
+const camCurve = new THREE.CatmullRomCurve3(camKeys.map(k => new THREE.Vector3(k[1], k[2], k[3])));
+function camAt(t) {
+  let i = 0; while (i < camKeys.length - 2 && t > camKeys[i + 1][0]) i++;
+  const [t0] = camKeys[i], [t1] = camKeys[i + 1]; const local = smooth(t0, t1, t);
+  return camCurve.getPoint((i + local) / (camKeys.length - 1));
+}
+
+window.renderFrame = (f, q = 0.95) => {
+  const t = f / FPS;
+  // lumières : contre-jour rouge, puis allumage de la lumière principale à 2,6 s
+  const red = smooth(0.3, 2.2, t);
+  rimL.intensity = 55 * red; rimR.intensity = 45 * red;
+  glowMat.color.setScalar(0.42 * red);
+  const k = smooth(2.55, 2.75, t);
+  key.intensity = 95 * k; fill.intensity = 3 * k; scene.environmentIntensity = 0.12 * k;
+  // cerises
+  traj.forEach((tr, i) => {
+    const [x, y, z, a, vis] = tr.frames[f]; const m = cherries[i]; m.visible = vis;
+    m.position.set(x, y, z); m.quaternion.setFromAxisAngle(tr.ax, a);
+  });
+  // poudre
+  const po = smooth(4.3, 5.0, t) * (1 - smooth(9.5, 11.5, t)); pMat.opacity = 0.9 * po;
+  pPar.forEach((p, i) => {
+    const tau = t - p.st;
+    if (tau < 0) { pPos[i * 3 + 1] = -50; return; }
+    const r = p.r0 * (1 + 0.22 * tau), an = p.a0 + tau * (0.9 + 0.5 / p.r0);
+    pPos[i * 3] = Math.cos(an) * r * 1.35; pPos[i * 3 + 1] = 0.15 + tau * p.vy + 0.08 * Math.sin(p.ph + tau * 2); pPos[i * 3 + 2] = -0.7 + Math.sin(an) * r * 0.5;
+  });
+  pGeo.attributes.position.needsUpdate = true;
+  // poussières
+  dMat.opacity = 0.45 * k;
+  dPar.forEach((d, i) => { dPos[i * 3] = d[0] + 0.05 * Math.sin(d[3] + t * 0.4); dPos[i * 3 + 1] = d[1] + 0.06 * Math.sin(d[3] * 2 + t * 0.3); dPos[i * 3 + 2] = d[2] + 0.04 * Math.cos(d[3] + t * 0.5); });
+  dGeo.attributes.position.needsUpdate = true;
+  // caméra
+  camera.position.copy(camAt(t)); camera.lookAt(0, 1.12 + 0.05 * Math.sin(t * 0.3), 0);
+  renderer.render(scene, camera);
+  return renderer.domElement.toDataURL('image/jpeg', q);
+};
+window.__bounces = bounces;
+window.__N = N;
+window.__ready = true;
+</script></body></html>
