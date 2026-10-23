@@ -1,0 +1,6 @@
+{
+ "name": "boostnaturel-videos",
+ "private": true,
+ "description": "Vidéos quotidiennes AllDeynn pour BoostNaturel (rendu Chrome + ffmpeg)",
+ "dependencies": { "puppeteer": "^24.0.0" }
+}

@@ -1,0 +1,52 @@
+<!doctype html><meta charset="utf-8"><style>
+@font-face{font-family:P;font-weight:500;src:url(p500.ttf)}
+@font-face{font-family:P;font-weight:600;src:url(p600.ttf)}
+@font-face{font-family:P;font-weight:700;src:url(p700.ttf)}
+@font-face{font-family:PF;font-style:italic;font-weight:400 900;src:url(PlayfairItalic.ttf)}
+html,body{margin:0;width:1080px;height:1920px;overflow:hidden}
+body{position:relative;background:linear-gradient(var(--ebg0),var(--ebg1));font-family:P;color:var(--ink)}
+.a{position:absolute;opacity:0;will-change:transform,opacity}
+#brand{top:110px;left:0;width:1080px;text-align:center;font:600 34px P;letter-spacing:14px;color:var(--acc);opacity:1}
+#title{white-space:nowrap;top:190px;left:0;width:1080px;text-align:center;font:italic 700 130px/1.05 PF,PF,Georgia,serif}
+#sub{top:350px;left:0;width:1080px;text-align:center;font:500 38px P;letter-spacing:6px;color:var(--acc)}
+#prod{left:240px;top:520px;width:600px;height:600px;mix-blend-mode:multiply}
+#sh{left:340px;top:1090px;width:400px;height:44px;border-radius:50%;background:var(--ink);filter:blur(22px)}
+.ln{height:2px;background:#C9A45C;transform-origin:left center}
+.lab{font:600 34px/1.25 P;color:var(--ink)}.lab small{display:block;font:500 28px P;color:var(--acc);letter-spacing:3px;margin-bottom:6px}
+#ing{left:90px;top:1290px;width:900px;text-align:center;font:italic 500 56px/1.3 PF,Georgia,serif}
+#cta{left:290px;top:1560px;width:500px;height:100px;border:2px solid #C9A45C;border-radius:50px;font:600 42px/100px P;text-align:center}
+#foot{left:60px;top:1790px;width:960px;text-align:center;font:500 27px/1.3 P;color:var(--ink2);opacity:1}
+</style>
+<div id="brand" class="a">ALLDEYNN</div>
+<div id="title" class="a"></div><div id="sub" class="a"></div>
+<div id="sh" class="a"></div><img id="prod" class="a">
+<div class="a ln" id="l1" style="left:90px;top:760px;width:150px"></div><div class="a lab" id="t1" style="left:90px;top:690px;width:300px"></div>
+<div class="a ln" id="l2" style="left:840px;top:800px;width:150px;transform-origin:right center"></div><div class="a lab" id="t2" style="left:640px;top:820px;width:350px;text-align:right"></div>
+<div class="a" id="f1" style="left:690px;top:1050px;width:200px;height:200px"></div><div class="a" id="f2" style="left:870px;top:1080px;width:150px;height:150px"></div>
+<div class="a" id="ing"></div>
+<div class="a" id="cta">boostnaturel.com</div>
+<div id="foot" class="a"></div>
+<script src="products.js"></script><script>
+const $=id=>document.getElementById(id);
+$('prod').src=C.img;$('title').textContent=C.name;$('title').style.fontSize=Math.min(130,Math.floor(1000/(C.name.length*0.62)))+'px';$('sub').textContent=C.tag;$('foot').textContent=C.foot;
+$('t1').innerHTML='<small>FORMAT</small>'+C.format;$('t2').innerHTML='<small>'+C.edLab[0]+'</small>'+C.edLab[1];$('ing').innerHTML=C.edIng;
+C.fruits.forEach((k,i)=>{const el=$('f'+(i+1));el.innerHTML=fruitSVG(k);if(C.fruits.length===1){el.style.left='780px';el.style.width='200px'}});
+if(C.wide){const s=(id,css)=>Object.assign($(id).style,css);
+ s('t1',{left:'90px',top:'1240px',width:'420px'});s('l1',{left:'90px',top:'1225px',width:'200px'});
+ s('t2',{left:'570px',top:'1240px',width:'420px'});s('l2',{left:'790px',top:'1225px',width:'200px'});
+ s('ing',{top:'1440px'});s('cta',{top:'1660px'});s('f1',{left:'60px',top:'800px',width:'170px',height:'170px'});s('f2',{left:'850px',top:'830px',width:'150px',height:'150px'});
+ if(C.fruits.length===1){s('f1',{left:'850px',top:'800px',width:'170px',height:'170px'})}}
+const e=x=>1-Math.pow(1-Math.min(1,Math.max(0,x)),3);
+const pop=x=>{const q=Math.min(1,Math.max(0,x));return q<1?e(q)*1.12-Math.sin(q*3.14)*0.12:1};
+const A=(el,t,a,dy,b=99)=>{const k=e((t-a)/0.6),o=t<a?0:Math.min(k,e((b-t)/0.4));el.style.opacity=o;el.style.transform=`translateY(${(1-k)*dy}px)`;return k};
+function render(t){
+ const rise=e((t-0.2)/1.1),y=(1-rise)*400+Math.sin(t*1.6)*10;
+ const p=$('prod');p.style.opacity=rise;p.style.transform=`translateY(${y}px) rotate(${Math.sin(t*1.0)*1.2}deg)`;$('sh').style.opacity=.25*rise;
+ A($('title'),t,0.6,40);A($('sub'),t,1.0,30);
+ const k1=e((t-2.6)/0.7);$('l1').style.opacity=k1?1:0;$('l1').style.transform=`scaleX(${k1})`;A($('t1'),t,3.0,20);
+ const k2=e((t-5.0)/0.7);$('l2').style.opacity=k2?1:0;$('l2').style.transform=`scaleX(${k2})`;A($('t2'),t,5.4,20);
+ C.fruits.forEach((_,i)=>{const el=$('f'+(i+1)),a=6.0+i*0.25,q=pop((t-a)/0.5);el.style.opacity=t<a?0:Math.min(1,q*2);el.style.transform=`scale(${q}) rotate(${(i?12:-10)+Math.sin(t*2+a)*3}deg)`});
+ A($('ing'),t,8.6,30);A($('cta'),t,10.6,30);
+}
+render(0);
+</script>

@@ -1,0 +1,4 @@
+cc0_*.mp3 : morceaux FreePD.com, licence CC0 1.0 Universal (domaine public):
+usage commercial autorisé, sans crédit obligatoire. Récupérés sur un miroir public (a.ocv.me/pub/stuff/music/freepd) le 2026-10-23, le site d'origine freepd.com étant fermé.
+gen_*.m4a : boucles générées par make_music.js (originales, aucun droit tiers).
+Réserve: TikTok/Instagram/Facebook peuvent détecter automatiquement un morceau même libre; en cas d'alerte (Content ID), supprimer le morceau du dossier.
