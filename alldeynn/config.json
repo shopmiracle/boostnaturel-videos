@@ -1,4 +1,22 @@
 {
- "produits": ["fish","caps","vita","zinc","sleep","d3k2","d3drops","fishfram"],
- "heure": "10:00"
+ "produits": [
+  "fish",
+  "caps",
+  "vita",
+  "zinc",
+  "sleep",
+  "d3k2",
+  "d3drops",
+  "fishfram"
+ ],
+ "heure": "10:00",
+ "rotation": {
+  "0": "edu",
+  "1": "video",
+  "2": "edu",
+  "3": "qr",
+  "4": "video",
+  "5": "routine",
+  "6": "video"
+ }
 }

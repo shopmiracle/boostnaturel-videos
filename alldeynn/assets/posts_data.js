@@ -11,4 +11,4 @@ const POSTS={
  fishfram:{a:'Framboise et fraise des bois, en boîte de 180 pastilles.',l:"Suivez la dose journalière et le mode d'emploi de l'emballage, à n'importe quel moment de la journée, de préférence toujours au même moment.",p:'Ne pas dépasser la dose journalière recommandée. Contient du poisson (ne convient pas aux personnes allergiques au poisson).',h:'#BoostNaturel #Collagene #AllDeynn #Allnutrition #FraiseDesBois'}
 };
 
-module.exports={POSTS,PRE};
+if(typeof module!=="undefined")module.exports={POSTS,PRE};
