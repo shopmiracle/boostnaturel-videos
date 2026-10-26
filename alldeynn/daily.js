@@ -1,4 +1,4 @@
-// Crée le post du lendemain (Europe/Paris) selon la rotation de config.json: vidéo, carrousel éducatif (edu), Q/R (qr) ou routine.
+// Crée le post du lendemain (Europe/Paris) selon la rotation de config.json: vidéo ou carrousel (edu, qr, routine, chiffre, quiz, duo).
 // usage: node daily.js [YYYY-MM-DD]   → écrit videos/<date>_...mp4 ou carrousels/<date>_<type>_<produit>/NN.jpg, met à jour history.json et écrit post.json
 const fs=require('fs'),path=require('path'),{spawnSync}=require('child_process');
 const puppeteer=require('puppeteer');
@@ -35,22 +35,41 @@ ${P.h}`,
  routine:()=>`Les moments de prise des produits, produit par produit, d'après les fiches. Doses et précautions : voir chaque emballage.${PRE}
 
 #BoostNaturel #ComplementAlimentaire`};
+const CAP2={
+ chiffre:(n,P)=>`Un chiffre, une phrase : ${n}. Glisse pour tout voir.
+
+${P.p}${PRE}
+
+#BoostNaturel #ComplementAlimentaire`,
+ quiz:(n,P)=>`Quiz ${n} : 3 questions, glisse pour les réponses.
+
+${P.p}${PRE}
+
+${P.h}`,
+ duo:(n,P,n2,P2)=>`${n} ou ${n2} ? On les met côte à côte : format, prise, précautions. Glisse pour tout voir.
+
+${n} : ${P.p}
+${n2} : ${P2.p}${PRE}
+
+#BoostNaturel #ComplementAlimentaire`};
+Object.assign(CAP,CAP2);
 // carrousel: une page slides.html?type=..&p=..&pal=.. capturée slide par slide (1080x1350)
 async function carousel(type){
  const l3=hist.slice(-3),ok=c=>!hist.slice(-2).some(h=>h.p===c.p)&&!l3.some(h=>h.pal===c.pal);
  let c;for(let i=0;i<300&&!(c&&ok(c));i++)c={p:type==='routine'?'fish':rnd(CFG.produits),pal:rnd(PALS)};
+ if(type==='duo')c.p2=rnd(CFG.produits.filter(x=>x!==c.p));
  const dir=`${date}_${type}_${c.p}`,out=path.join(D,'carrousels',dir);
  fs.rmSync(out,{recursive:true,force:true});fs.mkdirSync(out,{recursive:true});
  const b=await puppeteer.launch({headless:true,executablePath:process.env.CHROME||undefined,args:['--no-sandbox','--disable-setuid-sandbox','--allow-file-access-from-files']});
  const pg=await b.newPage();await pg.setViewport({width:1080,height:1350});
- await pg.goto('file://'+path.join(D,'assets','slides.html').split(path.sep).join('/')+`?type=${type}&p=${c.p}&pal=${c.pal}`);await pg.evaluate(()=>document.fonts.ready);
+ await pg.goto('file://'+path.join(D,'assets','slides.html').split(path.sep).join('/')+`?type=${type}&p=${c.p}&pal=${c.pal}${c.p2?'&p2='+c.p2:''}`);await pg.evaluate(()=>document.fonts.ready);
  const n=await pg.evaluate(()=>N),medias=[];
  for(let i=0;i<n;i++){await pg.evaluate(i=>show(i),i);await pg.evaluate(()=>document.fonts.ready);const f=`${String(i+1).padStart(2,'0')}.jpg`;await pg.screenshot({path:path.join(out,f),type:'jpeg',quality:92});medias.push(`carrousels/${dir}/${f}`)}
  await b.close();
  hist.push({date,f:type,...c,fichier:dir});fs.writeFileSync(HIST,JSON.stringify(hist.slice(-60),null,1));
  // garde 14 jours de carrousels
  fs.readdirSync(path.join(D,'carrousels')).sort().slice(0,-14).forEach(f=>fs.rmSync(path.join(D,'carrousels',f),{recursive:true,force:true}));
- fs.writeFileSync(path.join(D,'post.json'),JSON.stringify({date,heure:CFG.heure,format:'carrousel',type,medias,produit:c.p,style:type,texte:CAP[type](PRODUCTS_NAME[c.p],POSTS[c.p])},null,1));
+ fs.writeFileSync(path.join(D,'post.json'),JSON.stringify({date,heure:CFG.heure,format:'carrousel',type,medias,produit:c.p,style:type,texte:CAP[type](PRODUCTS_NAME[c.p],POSTS[c.p],c.p2&&PRODUCTS_NAME[c.p2],c.p2&&POSTS[c.p2])},null,1));
  console.log('OK',dir,n,'slides');
 }
 (async()=>{

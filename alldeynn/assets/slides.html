@@ -40,6 +40,26 @@ function build(type){
   {k:'steps',lab:'COMMENT LE PRENDRE',rows:c.steps,foot:c.foot},
   {k:'text',lab:'BON À SAVOIR',t:'',body:POST.p,foot:c.foot},
   cta];
+ if(type==='chiffre')return [
+  {k:'cover',lab:'UN CHIFFRE',t:c.format,sub:c.name,img:pk,foot:c.foot},
+  {k:'text',lab:'LA PRISE',t:c.steps[0].join(' '),body:c.steps[1].join(' '),foot:c.foot},
+  {k:'text',lab:'EN UNE PHRASE',t:'',body:POST.a,foot:c.foot},
+  cta];
+ if(type==='quiz')return [
+  {k:'cover',lab:'QUIZ',t:c.name,sub:'3 questions, glisse pour les réponses',img:pk,foot:c.foot},
+  {k:'qa',chip:'?',q:'Combien y en a-t-il dans l’emballage ?',a:'',foot:c.foot},
+  {k:'qa',chip:'R',q:c.format,a:c.name,foot:c.foot},
+  {k:'qa',chip:'?',q:'Comment le prendre ?',a:'',foot:c.foot},
+  {k:'qa',chip:'R',q:'Voilà',a:c.steps.map(r=>r.join(' ')).join(' · '),foot:c.foot},
+  {k:'qa',chip:'?',q:'Une précaution ?',a:'',foot:c.foot},
+  {k:'qa',chip:'R',q:'À retenir',a:POST.p,foot:c.foot},
+  cta];
+ if(type==='duo'){const c2=P[PK2],n=[c.name,c2.name],ks=[PK,PK2];return [
+  {k:'moment',lab:'CÔTE À CÔTE',ks,rows:[[n[0],c.tag],[n[1],c2.tag]],foot:GEN},
+  {k:'moment',lab:'LE FORMAT',ks,rows:[[n[0],c.format],[n[1],c2.format]],foot:GEN},
+  {k:'moment',lab:'LA PRISE',ks,rows:[[n[0],c.steps[0].join(' ')+' · '+c.steps[1].join(' ')],[n[1],c2.steps[0].join(' ')+' · '+c2.steps[1].join(' ')]],foot:GEN},
+  {k:'moment',lab:'PRÉCAUTIONS',ks,rows:[[n[0],POSTS[PK].p],[n[1],POSTS[PK2].p]],foot:GEN},
+  {k:'cta',foot:GEN,gen:true}]}
  if(type==='qr')return [
   {k:'cover',lab:'VOS QUESTIONS',t:c.name,sub:'on répond en 3 slides',img:pk,foot:c.foot},
   {k:'qa',q:'C’est quoi ?',a:POST.a,foot:c.foot},
@@ -52,13 +72,13 @@ function build(type){
   ...M.map(([l,ks])=>({k:'moment',lab:l,ks,rows:ks.map(k=>[P[k].name,when[k]]),foot:GEN})),
   {k:'cta',foot:GEN,gen:true}];
 }
-const SL=build(TYPE),N=SL.length;
+const PK2=QS.get('p2')||'caps',SL=build(TYPE),N=SL.length;
 function show(i){
  const s=SL[i],m=$('main');let h='';
  if(s.k==='cover')h=`<div class="lab">${s.lab}</div><div class="big">${s.t}</div>${s.img?IMG(s.img):''}<div class="body" style="margin-top:0">${s.sub}</div>`;
  if(s.k==='text')h=`<div class="lab">${s.lab}</div>${s.t?`<div class="t">${s.t}</div>`:''}<div class="body">${s.body}</div>`;
  if(s.k==='steps')h=`<div class="lab">${s.lab}</div>${s.rows.map(r=>`<div class="row">${r[0]}<small>${r[1]}</small></div>`).join('')}`;
- if(s.k==='qa')h=`<div class="chip">?</div><div class="q">${s.q}</div><div class="body" style="font-size:${s.a.length>180?40:46}px">${s.a}</div>`;
+ if(s.k==='qa')h=`<div class="chip">${s.chip||'?'}</div><div class="q">${s.q}</div><div class="body" style="font-size:${s.a.length>180?40:46}px">${s.a}</div>`;
  if(s.k==='moment')h=`<div class="lab" style="font-size:${s.lab.length>20?28:32}px">${s.lab}</div><div class="th">${s.ks.map(k=>`<img src="${P[k].img}">`).join('')}</div>${s.rows.map(r=>`<div class="row">${r[0]}<small>${r[1]}</small></div>`).join('')}`;
  if(s.k==='cta')h=s.gen?`<div class="big">Toute la gamme</div><div class="body">Fiches, doses et précautions sur le site</div><div class="btn">boostnaturel.com</div>`
   :`${IMG(PK)}<div class="t" style="font-size:64px">${C.name}</div><div class="price">${C.price}</div><div class="btn">boostnaturel.com</div>`;
