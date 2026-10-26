@@ -11,9 +11,21 @@ const rnd=a=>a[Math.floor(Math.random()*a.length)];
 const parisDate=(add=0)=>{const d=new Date(Date.now()+add*864e5);return new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Paris'}).format(d)};
 const date=process.argv[2]||parisDate(1);
 const isoWeek=s=>{const t=new Date(s+'T12:00:00Z'),n=(t.getUTCDay()+6)%7;t.setUTCDate(t.getUTCDate()-n+3);const f=new Date(Date.UTC(t.getUTCFullYear(),0,4));return 1+Math.round(((t-f)/864e5-3+(f.getUTCDay()+6)%7)/7)};
-// semaine ISO impaire = rotation_a (3 vidéos, 4 autres), paire = rotation_b (4 vidéos, 3 autres)
+// planning de la semaine ISO, différent chaque semaine: 3 ou 4 vidéos (en alternance), jamais 2 vidéos de suite, les autres jours = carrousels
+// dont le type tourne dans CFG.types (pas de répétition dans la semaine). Graine = année*100+semaine → même plan pour tous les runs de la semaine.
+function weekPlan(d){
+ const t=new Date(d+'T12:00:00Z'),n=(t.getUTCDay()+6)%7;t.setUTCDate(t.getUTCDate()-n+3);
+ const y=t.getUTCFullYear(),w=isoWeek(d);let a=y*100+w;
+ const rand=()=>{a|=0;a=a+0x6D2B79F5|0;let r=Math.imul(a^a>>>15,1|a);r=r+Math.imul(r^r>>>7,61|r)^r;return((r^r>>>14)>>>0)/4294967296};
+ const nVid=CFG.videos_par_semaine[w%CFG.videos_par_semaine.length],days=[1,2,3,4,5,6,0];// lundi..dimanche
+ let vid;for(let i=0;i<500;i++){const p=days.map(x=>[rand(),x]).sort((x,y)=>x[0]-y[0]).slice(0,nVid).map(x=>x[1]);
+  const idx=p.map(x=>days.indexOf(x)).sort((x,y)=>x-y);if(idx.every((v,j)=>!j||v-idx[j-1]>1)){vid=p;break}}
+ vid=vid||[1,3,5].slice(0,nVid);
+ const T=CFG.types,start=(w*5)%T.length,autres=days.filter(x=>!vid.includes(x)),plan={};
+ vid.forEach(x=>plan[x]='video');autres.forEach((x,j)=>plan[x]=T[(start+j)%T.length]);return plan}
 if(CFG.debut&&date<CFG.debut){fs.rmSync(path.join(D,'post.json'),{force:true});console.log('SKIP: avant le début ('+CFG.debut+'), semaine déjà programmée à la main');process.exit(0)}
-const FMT=((isoWeek(date)%2?CFG.rotation_a:CFG.rotation_b)||{})[new Date(date+'T12:00:00Z').getUTCDay()]||'video';
+const FMT=weekPlan(date)[new Date(date+'T12:00:00Z').getUTCDay()]||'video';
+if(process.argv[3]==='plan'){const j=['dim','lun','mar','mer','jeu','ven','sam'];console.log([1,2,3,4,5,6,0].map(x=>j[x]+':'+weekPlan(date)[x]).join(' '));process.exit(0)}
 const HIST=path.join(D,'history.json'),hist=fs.existsSync(HIST)?JSON.parse(fs.readFileSync(HIST,'utf8')):[];
 const music=fs.readdirSync(path.join(D,'music')).filter(f=>/\.(mp3|m4a|wav|aac)$/i.test(f));
 function pick(){
