@@ -10,7 +10,8 @@
   "fishfram"
  ],
  "heure": "10:00",
- "rotation": {
+ "debut": "2026-11-02",
+ "rotation_a": {
   "0": "edu",
   "1": "video",
   "2": "edu",
@@ -18,5 +19,14 @@
   "4": "video",
   "5": "routine",
   "6": "video"
+ },
+ "rotation_b": {
+  "0": "video",
+  "1": "video",
+  "2": "edu",
+  "3": "video",
+  "4": "qr",
+  "5": "video",
+  "6": "routine"
  }
 }

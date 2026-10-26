@@ -10,7 +10,10 @@ const STYLES={pub:['pub.html',15],gestes:['steps.html',16],edito:['edito.html',1
 const rnd=a=>a[Math.floor(Math.random()*a.length)];
 const parisDate=(add=0)=>{const d=new Date(Date.now()+add*864e5);return new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Paris'}).format(d)};
 const date=process.argv[2]||parisDate(1);
-const FMT=(CFG.rotation||{})[new Date(date+'T12:00:00Z').getUTCDay()]||'video';
+const isoWeek=s=>{const t=new Date(s+'T12:00:00Z'),n=(t.getUTCDay()+6)%7;t.setUTCDate(t.getUTCDate()-n+3);const f=new Date(Date.UTC(t.getUTCFullYear(),0,4));return 1+Math.round(((t-f)/864e5-3+(f.getUTCDay()+6)%7)/7)};
+// semaine ISO impaire = rotation_a (3 vidéos, 4 autres), paire = rotation_b (4 vidéos, 3 autres)
+if(CFG.debut&&date<CFG.debut){fs.rmSync(path.join(D,'post.json'),{force:true});console.log('SKIP: avant le début ('+CFG.debut+'), semaine déjà programmée à la main');process.exit(0)}
+const FMT=((isoWeek(date)%2?CFG.rotation_a:CFG.rotation_b)||{})[new Date(date+'T12:00:00Z').getUTCDay()]||'video';
 const HIST=path.join(D,'history.json'),hist=fs.existsSync(HIST)?JSON.parse(fs.readFileSync(HIST,'utf8')):[];
 const music=fs.readdirSync(path.join(D,'music')).filter(f=>/\.(mp3|m4a|wav|aac)$/i.test(f));
 function pick(){
