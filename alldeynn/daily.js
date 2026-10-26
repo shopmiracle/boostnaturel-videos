@@ -29,9 +29,9 @@ ${P.h}`,
 ${P.p}${PRE}
 
 ${P.h}`,
- routine:()=>`Les moments de prise des produits AllDeynn, produit par produit, d'après les fiches. Doses et précautions : voir chaque emballage.${PRE}
+ routine:()=>`Les moments de prise des produits, produit par produit, d'après les fiches. Doses et précautions : voir chaque emballage.${PRE}
 
-#BoostNaturel #AllDeynn #Allnutrition #ComplementAlimentaire`};
+#BoostNaturel #ComplementAlimentaire`};
 // carrousel: une page slides.html?type=..&p=..&pal=.. capturée slide par slide (1080x1350)
 async function carousel(type){
  const l3=hist.slice(-3),ok=c=>!hist.slice(-2).some(h=>h.p===c.p)&&!l3.some(h=>h.pal===c.pal);
