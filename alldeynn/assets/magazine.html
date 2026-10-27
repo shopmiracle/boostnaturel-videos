@@ -1,0 +1,35 @@
+﻿<!doctype html><meta charset="utf-8"><style>
+body{background:var(--bg0)}
+#blk{left:60px;top:300px;width:960px;height:1000px;background:var(--bg1);transform-origin:top}
+#box{left:190px;top:330px;width:700px;height:940px;mix-blend-mode:multiply}#prod{width:100%;height:100%;object-fit:contain}
+#mast{left:60px;top:70px;width:960px;font:700 76px/1 P;letter-spacing:6px;color:var(--ink);text-transform:uppercase;text-align:center}
+.rule{left:60px;width:960px;height:4px;background:var(--ink);transform-origin:left}
+#kick{left:60px;top:250px;font:600 30px P;letter-spacing:6px;color:var(--ink2);text-transform:uppercase}
+#iss{right:60px;top:250px;font:600 30px P;letter-spacing:4px;color:var(--ink2);text-align:right}
+#nm{left:60px;top:1330px;width:960px;font:700 118px/.98 P;color:var(--ink);text-transform:uppercase;letter-spacing:-2px}
+#br{left:60px;top:1330px;width:960px;font:600 36px P;letter-spacing:8px;color:var(--ink2);text-transform:uppercase}
+#dt{left:60px;top:1620px;width:620px;font:500 38px/1.3 P;color:var(--ink2)}
+#pr{left:790px;top:1090px;width:220px;height:220px;border-radius:50%;background:var(--ink);color:#fff;font:700 50px/220px P;text-align:center}
+#foot{position:absolute;left:60px;width:960px;bottom:34px;text-align:center;font:500 22px/1.3 P;color:var(--ink2)}
+</style>
+<div class="a" id="blk"></div><div class="a" id="box"><img id="prod"></div>
+<div class="a" id="mast">BoostNaturel</div><div class="a rule" id="r1" style="top:190px"></div>
+<div class="a" id="kick">Sélection du jour</div><div class="a" id="iss"></div>
+<div class="a" id="br"></div><div class="a" id="nm"></div><div class="a" id="dt"></div><div class="a" id="pr"></div><div id="foot"></div>
+<script src="common.js"></script><script src="product.js"></script><script>
+$('prod').src=CP.img;$('br').textContent=CP.brand;$('nm').textContent=CP.name;$('dt').textContent=CP.detail;$('pr').textContent=CP.price;$('foot').textContent=CP.foot;
+$('iss').textContent='N° '+(new Date().getDate()+100);
+function render(t){
+ IN($('mast'),t,0,-40);const r=e(t/.8);$('r1').style.opacity=1;$('r1').style.transform=`scaleX(${r})`;
+ IN($('kick'),t,.5,0,.5,-40);IN($('iss'),t,.6,0,.5,40);
+ const b=e((t-.3)/.9);$('blk').style.opacity=1;$('blk').style.transform=`scaleY(${b})`;
+ const k=e((t-1)/1);$('box').style.opacity=k;$('box').style.transform=`translateY(${(1-k)*120}px) scale(${.9+k*.1+Math.sin(t*1.2)*.008})`;
+ IN($('br'),t,2,30);
+ // titre en rideau : remonte depuis une ligne
+ const n=e((t-2.3)/.8);$('nm').style.opacity=n;$('nm').style.transform=`translateY(${(1-n)*90+50}px)`;$('nm').style.clipPath=`inset(0 0 ${(1-n)*100}% 0)`;
+ IN($('dt'),t,3.4,30);const p=e((t-4.2)/.6);$('pr').style.opacity=p;$('pr').style.transform=`scale(${.4+p*.6}) rotate(${(1-p)*-40+Math.sin(t*2)*2}deg)`;
+ // sortie douce de la nom pour montrer le prix longtemps: rien
+}
+render(0);
+</script>
+

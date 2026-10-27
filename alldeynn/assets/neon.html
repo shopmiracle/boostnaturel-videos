@@ -1,0 +1,33 @@
+﻿<!doctype html><meta charset="utf-8"><style>
+body{background:#0a0a14}
+#g1{left:-300px;top:200px;width:900px;height:900px;border-radius:50%;background:radial-gradient(circle,#ff2d9566,#0000 65%)}
+#g2{left:500px;top:1000px;width:900px;height:900px;border-radius:50%;background:radial-gradient(circle,#00e5ff55,#0000 65%)}
+.st{height:26px;width:1700px;left:-300px;background:linear-gradient(90deg,#0000,#ff2d95,#0000)}
+#card{left:140px;top:380px;width:800px;height:880px;border-radius:44px;background:#fff;box-shadow:0 0 0 6px #00e5ff,0 0 60px 10px #00e5ffaa,0 0 140px 30px #ff2d9566;overflow:hidden}
+#prod{width:100%;height:100%;object-fit:contain}
+#br{left:0;width:1080px;top:150px;text-align:center;font:700 44px P;letter-spacing:14px;color:#00e5ff;text-transform:uppercase;text-shadow:0 0 18px #00e5ff}
+#nm{left:40px;width:1000px;top:1290px;text-align:center;font:700 100px/1.02 P;color:#fff;text-transform:uppercase;text-shadow:0 0 24px #ff2d95,0 0 60px #ff2d95}
+#dt{left:80px;width:920px;top:1520px;text-align:center;font:500 42px/1.25 P;color:#cfd3ff}
+#pr{left:0;width:1080px;top:1650px;text-align:center;font:700 100px P;color:#fff;text-shadow:0 0 22px #00e5ff,0 0 50px #00e5ff}
+#foot{position:absolute;left:60px;width:960px;bottom:36px;text-align:center;font:500 22px/1.3 P;color:#9aa0d8}
+</style>
+<div class="a" id="g1"></div><div class="a" id="g2"></div>
+<div class="a st" id="s1" style="top:300px;transform:rotate(-8deg)"></div><div class="a st" id="s2" style="top:1380px;transform:rotate(-8deg)"></div>
+<div class="a" id="card"><img id="prod"></div>
+<div class="a" id="br"></div><div class="a" id="nm"></div><div class="a" id="dt"></div><div class="a" id="pr"></div><div id="foot"></div>
+<script src="common.js"></script><script src="product.js"></script><script>
+$('prod').src=CP.img;$('br').textContent=CP.brand;$('nm').textContent=CP.name;$('dt').textContent=CP.detail;$('pr').textContent=CP.price;$('foot').textContent=CP.foot;
+function render(t){
+ IN($('g1'),t,0,0,.6);IN($('g2'),t,.2,0,.6);
+ const fl=t<1.3?(Math.sin(t*60)>0?1:.35):1; // clignotement néon à l'allumage
+ $('br').style.opacity=t>.3?fl:0;
+ const s=e((t-.2)/.5);['s1','s2'].forEach((id,i)=>{const x=(t*500*(i?-1:1))%700;$(id).style.opacity=s*.9;$(id).style.transform=`rotate(-8deg) translateX(${x-350}px)`});
+ const k=e((t-.5)/.7);$('card').style.opacity=k;$('card').style.transform=`translateX(${(1-k)*-1100}px) scale(${1+Math.sin(t*2.4)*.012})`;
+ const p=.6+.4*Math.abs(Math.sin(t*3));
+ const n=e((t-1.6)/.4);$('nm').style.opacity=t>1.6?n*(t<3?(Math.sin(t*50)>-.3?1:.5):1):0;$('nm').style.transform=`scale(${1.3-n*.3})`;
+ IN($('dt'),t,2.8,30);const q=e((t-3.6)/.4);$('pr').style.opacity=q;$('pr').style.transform=`scale(${1+(1-q)*.6+Math.sin(t*5)*.015})`;
+ $('pr').style.filter=`brightness(${.9+p*.3})`;
+}
+render(0);
+</script>
+

@@ -84,9 +84,27 @@ async function carousel(type){
  fs.writeFileSync(path.join(D,'post.json'),JSON.stringify({date,heure:CFG.heure,format:'carrousel',type,medias,produit:c.p,style:type,texte:CAP[type](PRODUCTS_NAME[c.p],POSTS[c.p],c.p2&&PRODUCTS_NAME[c.p2],c.p2&&POSTS[c.p2])},null,1));
  console.log('OK',dir,n,'slides');
 }
+// mode catalogue: la routine écrit cat_products.json (3 produits tirés au hasard dans Shopify: slug,name,brand,detail,price,imgUrl,foot).
+// Un jour vidéo sur deux (jamais 2 de suite) utilise un style catalogue: catalogue, magazine, neon, marque (1 produit) ou trio (3 produits).
+const CATF=path.join(D,'cat_products.json'),CATS={catalogue:['catalogue.html',12.5],magazine:['magazine.html',9],neon:['neon.html',9],trio:['trio.html',9],marque:['marque.html',9]};
+async function catProducts(){
+ if(!fs.existsSync(CATF))return null;
+ const l=JSON.parse(fs.readFileSync(CATF,'utf8'));if(!Array.isArray(l)||!l.length)return null;
+ fs.mkdirSync(path.join(D,'assets','cat'),{recursive:true});
+ for(const p of l){const r=await fetch(p.imgUrl+(p.imgUrl.includes('?')?'&':'?')+'width=900');if(!r.ok)throw new Error('image '+r.status+' '+p.imgUrl);
+  fs.writeFileSync(path.join(D,'assets','cat',p.slug+'.jpg'),Buffer.from(await r.arrayBuffer()));p.img='cat/'+p.slug+'.jpg'}
+ return l}
 (async()=>{
  if(FMT!=='video')return carousel(FMT);
- const c=pick(),[page,DUR]=STYLES[c.s],name=`${date}_${c.p}_${c.s}_${c.pal}.mp4`,out=path.join(D,'videos',name),FR=path.join(D,'frames');
+ const cat=hist.length&&hist[hist.length-1].cat?null:await catProducts();
+ let c,page,DUR,name;
+ if(cat){
+  const styles=Object.keys(CATS).filter(s=>(cat.length>=3||s!=='trio')&&!hist.slice(-2).some(h=>h.s===s));
+  c={cat:true,p:cat[0].slug,s:rnd(styles),pal:rnd(PALS),hook:0,m:rnd(music)};[page,DUR]=CATS[c.s];
+  fs.writeFileSync(path.join(D,'assets','product.js'),'window.CP='+JSON.stringify(cat[0])+';');
+  fs.writeFileSync(path.join(D,'assets','trio.js'),'window.CPS='+JSON.stringify(cat.slice(0,3))+';');
+ }else{c=pick();[page,DUR]=STYLES[c.s]}
+ name=`${date}_${c.p}_${c.s}_${c.pal}.mp4`;const out=path.join(D,'videos',name),FR=path.join(D,'frames');
  fs.rmSync(FR,{recursive:true,force:true});fs.mkdirSync(FR,{recursive:true});fs.mkdirSync(path.join(D,'videos'),{recursive:true});
  const b=await puppeteer.launch({headless:true,executablePath:process.env.CHROME||undefined,args:['--no-sandbox','--disable-setuid-sandbox','--allow-file-access-from-files']});
  const pg=await b.newPage();await pg.setViewport({width:1080,height:1920});
@@ -101,7 +119,9 @@ async function carousel(type){
  hist.push({date,...c,fichier:name});fs.writeFileSync(HIST,JSON.stringify(hist.slice(-60),null,1));
  // garde 14 jours de vidéos
  fs.readdirSync(path.join(D,'videos')).sort().slice(0,-14).forEach(f=>fs.rmSync(path.join(D,'videos',f)));
- const P=POSTS[c.p];
- fs.writeFileSync(path.join(D,'post.json'),JSON.stringify({date,heure:CFG.heure,format:'video',medias:['videos/'+name],fichier:name,produit:c.p,style:c.s,texte:`${P.a}\n\n${P.l}\n\n${P.p}${PRE}\n\n${P.h}`},null,1));
+ // légende catalogue: seulement les infos de la fiche (nom, marque, format), jamais de prix ni de lien (règle TikTok)
+ const texte=cat?(c.s==='trio'?`3 idées du jour : ${cat.slice(0,3).map(p=>p.name+' ('+p.brand+')').join(', ')}.`:`${cat[0].name} (${cat[0].brand}) : ${cat[0].detail.replace(/ · /g,', ')}.`)+(cat[0].foot&&/alimentaire/i.test(cat[0].foot)?`\n\n${cat[0].foot}`:'')+'\n\n#BoostNaturel':(P=>`${P.a}\n\n${P.l}\n\n${P.p}${PRE}\n\n${P.h}`)(POSTS[c.p]);
+ fs.writeFileSync(path.join(D,'post.json'),JSON.stringify({date,heure:CFG.heure,format:'video',medias:['videos/'+name],fichier:name,produit:c.p,style:c.s,catalogue:!!cat,texte},null,1));
  console.log('OK',name,JSON.stringify(c));
 })();
+
