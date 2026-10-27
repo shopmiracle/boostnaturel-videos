@@ -1,4 +1,4 @@
-﻿<!doctype html><meta charset="utf-8"><style>
+<!doctype html><meta charset="utf-8"><style>
 body{background:linear-gradient(var(--bg0),var(--bg1))}
 #ttl{left:0;width:1080px;top:110px;text-align:center;font:700 80px/1.05 P;color:var(--ink)}
 #sub{left:0;width:1080px;top:290px;text-align:center;font:600 34px P;letter-spacing:8px;color:var(--ink2);text-transform:uppercase}
@@ -16,6 +16,7 @@ body{background:linear-gradient(var(--bg0),var(--bg1))}
 const cards=CPS.map((p,i)=>{const d=document.createElement('div');d.className='a cd';d.style.top=(400+i*490)+'px';
  d.innerHTML=`<img class="im" src="${p.img}"><div class="n">${p.brand}</div><div class="m">${p.name}</div><div class="d">${p.detail}</div><div class="p">${p.price}</div>`;$('cards').appendChild(d);return d});
 $('foot').textContent='Compléments alimentaires : respecter la dose recommandée. Ne remplacent pas une alimentation variée.';
+if(typeof STK!=='undefined'&&STK)$('ttl').innerHTML='Routine<br>'+STK;
 function render(t){
  IN($('ttl'),t,0,-50);IN($('sub'),t,.4,0,.5);
  cards.forEach((c,i)=>{const a=1+i*1.2,k=e((t-a)/.8);c.style.opacity=k;c.style.transform=`translateX(${(1-k)*(i%2?900:-900)}px) rotate(${(1-k)*(i%2?6:-6)}deg) translateY(${Math.sin(t*1.5+i)*5}px)`});

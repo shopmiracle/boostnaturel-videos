@@ -72,7 +72,7 @@ async function carousel(type,cat){
  let c;for(let i=0;i<300&&!(c&&ok(c));i++)c=cat?{cat:true,p:cat[0].slug,pal:rnd(PALS)}:{p:type==='routine'?'fish':rnd(CFG.produits),pal:rnd(PALS)};
  c.theme=rnd(THEMES.filter(x=>!hist.filter(h=>h.theme).slice(-3).some(h=>h.theme===x)));
  if(type==='duo'&&!cat)c.p2=rnd(CFG.produits.filter(x=>x!==c.p));
- if(cat)fs.writeFileSync(path.join(D,'assets','cat.js'),'window.CATP='+JSON.stringify(cat)+';');
+ if(cat)fs.writeFileSync(path.join(D,'assets','cat.js'),'window.CATP='+JSON.stringify(cat)+';window.STK='+JSON.stringify(STACK)+';');
  const dir=`${date}_${type}_${c.p}`,out=path.join(D,'carrousels',dir);
  fs.rmSync(out,{recursive:true,force:true});fs.mkdirSync(out,{recursive:true});
  const b=await puppeteer.launch({headless:true,executablePath:process.env.CHROME||undefined,args:['--no-sandbox','--disable-setuid-sandbox','--allow-file-access-from-files']});
@@ -94,13 +94,14 @@ function catCaption(type,L){
   chiffre:`Un chiffre, une phrase : ${nb(a)}. Glisse pour tout voir.`,quiz:`Quiz ${a.name} : 3 questions, glisse pour les réponses.`,
   qr:`Vos questions sur ${nb(a)}, on répond en quelques slides. Glisse pour tout voir.`,
   duo:`${a.name} ou ${b.name} ? On les met côte à côte : format, saveurs. Glisse pour tout voir.`,
-  routine:`La sélection du jour : ${L.slice(0,3).map(nb).join(', ')}. Glisse pour tout voir.`}[type];
+  routine:`Routine ${STACK||'du jour'} : ${L.slice(0,3).map(nb).join(' + ')}. Glisse pour tout voir.`}[type];
  return t+(a.foot&&/alimentaire/i.test(a.foot)?`\n\n${a.foot}`:'')+'\n\n#BoostNaturel'}// mode catalogue: la routine écrit cat_products.json (3 produits tirés au hasard dans Shopify: slug,name,brand,detail,price,imgUrl,foot).
 // Toutes les vidéos et tous les carrousels utilisent le catalogue (repli AllDeynn si le fichier manque). Vidéo = style: catalogue, magazine, neon, marque (1 produit) ou trio (3 produits).
 const CATF=path.join(D,'cat_products.json'),CATS={catalogue:['catalogue.html',12.5],magazine:['magazine.html',9],neon:['neon.html',9],trio:['trio.html',9],marque:['marque.html',9],flash:['flash.html',10.5],collage:['collage.html',9],split:['split.html',9],ticket:['ticket.html',9],ticker:['ticker.html',9],carte:['carte.html',9]};
+let STACK='';// nom de la routine cohérente du jour (ex: prise de masse), écrit par la routine cloud
 async function catProducts(){
  if(!fs.existsSync(CATF))return null;
- const l=JSON.parse(fs.readFileSync(CATF,'utf8'));if(!Array.isArray(l)||!l.length)return null;
+ const j=JSON.parse(fs.readFileSync(CATF,'utf8')),l=Array.isArray(j)?j:j.produits;STACK=Array.isArray(j)?'':(j.routine||'');if(!Array.isArray(l)||!l.length)return null;
  fs.mkdirSync(path.join(D,'assets','cat'),{recursive:true});
  for(const p of l){const r=await fetch(p.imgUrl+(p.imgUrl.includes('?')?'&':'?')+'width=900');if(!r.ok)throw new Error('image '+r.status+' '+p.imgUrl);
   fs.writeFileSync(path.join(D,'assets','cat',p.slug+'.jpg'),Buffer.from(await r.arrayBuffer()));p.img='cat/'+p.slug+'.jpg'}
@@ -113,7 +114,7 @@ async function catProducts(){
   const styles=Object.keys(CATS).filter(s=>(cat.length>=3||s!=='trio')&&!hist.filter(h=>h.cat).slice(-4).some(h=>h.s===s));
   c={cat:true,p:cat[0].slug,s:rnd(styles),pal:rnd(PALS),hook:0,m:rnd(music)};[page,DUR]=CATS[c.s];
   fs.writeFileSync(path.join(D,'assets','product.js'),'window.CP='+JSON.stringify(cat[0])+';');
-  fs.writeFileSync(path.join(D,'assets','trio.js'),'window.CPS='+JSON.stringify(cat.slice(0,3))+';');
+  fs.writeFileSync(path.join(D,'assets','trio.js'),'window.CPS='+JSON.stringify(cat.slice(0,3))+';window.STK='+JSON.stringify(STACK)+';');
  }else{c=pick();[page,DUR]=STYLES[c.s]}
  name=`${date}_${c.p}_${c.s}_${c.pal}.mp4`;const out=path.join(D,'videos',name),FR=path.join(D,'frames');
  fs.rmSync(FR,{recursive:true,force:true});fs.mkdirSync(FR,{recursive:true});fs.mkdirSync(path.join(D,'videos'),{recursive:true});
@@ -131,7 +132,7 @@ async function catProducts(){
  // garde 14 jours de vidéos
  fs.readdirSync(path.join(D,'videos')).sort().slice(0,-14).forEach(f=>fs.rmSync(path.join(D,'videos',f)));
  // légende catalogue: seulement les infos de la fiche (nom, marque, format), jamais de prix ni de lien (règle TikTok)
- const texte=cat?(c.s==='trio'?`3 idées du jour : ${cat.slice(0,3).map(p=>p.name+' ('+p.brand+')').join(', ')}.`:`${cat[0].name} (${cat[0].brand}) : ${cat[0].detail.replace(/ · /g,', ')}.`)+(cat[0].foot&&/alimentaire/i.test(cat[0].foot)?`\n\n${cat[0].foot}`:'')+'\n\n#BoostNaturel':(P=>`${P.a}\n\n${P.l}\n\n${P.p}${PRE}\n\n${P.h}`)(POSTS[c.p]);
+ const texte=cat?(c.s==='trio'?`3 idées du jour : ${cat.slice(0,3).map(p=>p.name+' ('+p.brand+')').join(' + ')}.`:`${cat[0].name} (${cat[0].brand}) : ${cat[0].detail.replace(/ · /g,', ')}.`)+(cat[0].foot&&/alimentaire/i.test(cat[0].foot)?`\n\n${cat[0].foot}`:'')+'\n\n#BoostNaturel':(P=>`${P.a}\n\n${P.l}\n\n${P.p}${PRE}\n\n${P.h}`)(POSTS[c.p]);
  fs.writeFileSync(path.join(D,'post.json'),JSON.stringify({date,heure:CFG.heure,format:'video',medias:['videos/'+name],fichier:name,produit:c.p,style:c.s,catalogue:!!cat,texte},null,1));
  console.log('OK',name,JSON.stringify(c));
 })();

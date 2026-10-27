@@ -78,7 +78,7 @@ function build(type){
   {k:'moment',lab:'LE FORMAT',ps:[c,c2],rows:[[c.name,c.detail],[c2.name,c2.detail]],foot:GEN},
   {k:'moment',lab:'LES SAVEURS',ps:[c,c2],rows:[[c.name,list(c.saveurs)||'—'],[c2.name,list(c2.saveurs)||'—']],foot:GEN},
   {k:'moment',lab:'LE PRIX',ps:[c,c2],rows:[[c.name,c.price],[c2.name,c2.price]],foot:GEN},{k:'cta',gen:true,foot:GEN}];
- else s=[{k:'moment',lab:'LA SÉLECTION DU JOUR',ps:L.slice(0,3),rows:L.slice(0,3).map(p=>[p.name,p.brand]),foot:GEN},
+ else s=[{k:'moment',lab:STK?'ROUTINE '+STK.toUpperCase():'LA SÉLECTION DU JOUR',ps:L.slice(0,3),rows:L.slice(0,3).map(p=>[p.name,p.brand]),foot:GEN},
   ...L.slice(0,3).map(p=>({k:'cover',lab:p.brand.toUpperCase(),t:p.name,sub:p.detail,p,foot:p.foot})),{k:'cta',gen:true,foot:GEN}];
  return s.filter(Boolean)}
 const SL=build(TYPE),N=SL.length;
@@ -88,7 +88,7 @@ function show(i){
  if(s.k==='text')h=`<div class="lab">${s.lab}</div>${s.t?`<div class="t">${s.t}</div>`:''}<div class="body">${s.body}</div>`;
  if(s.k==='qa')h=`<div class="chip">${s.chip||'?'}</div><div class="q">${s.q}</div><div class="body" style="font-size:${s.a.length>180?40:46}px">${s.a}</div>`;
  if(s.k==='moment')h=`<div class="lab">${s.lab}</div><div class="th">${s.ps.map(p=>`<img src="${p.img}">`).join('')}</div>${s.rows.map(r=>`<div class="row">${r[0]}<small>${r[1]}</small></div>`).join('')}`;
- if(s.k==='cta')h=s.gen?`<div class="big">La sélection du jour</div><div class="body">Fiches, doses et précautions sur le site</div><div class="btn">boostnaturel.com</div>`
+ if(s.k==='cta')h=s.gen?`<div class="big">${STK?'Routine '+STK:'La sélection du jour'}</div><div class="body">Fiches, doses et précautions sur le site</div><div class="btn">boostnaturel.com</div>`
   :`${IM(s.p)}<div class="t" style="font-size:64px">${s.p.name}</div><div class="price">${s.p.price}</div><div class="btn">boostnaturel.com</div>`;
  m.innerHTML=h;$('foot').textContent=s.foot;$('num').textContent=(i+1)+' / '+N;$('sw').style.display=i<N-1?'block':'none';
  $('tint').style.background=`linear-gradient(${PAL[0]},${PAL[1]})`;
