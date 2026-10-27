@@ -67,27 +67,36 @@ ${n2} : ${P2.p}${PRE}
 #BoostNaturel #ComplementAlimentaire`};
 Object.assign(CAP,CAP2);
 // carrousel: une page slides.html?type=..&p=..&pal=.. capturée slide par slide (1080x1350)
-async function carousel(type){
+async function carousel(type,cat){
  const l3=hist.slice(-3),ok=c=>!hist.slice(-2).some(h=>h.p===c.p)&&!l3.some(h=>h.pal===c.pal);
- let c;for(let i=0;i<300&&!(c&&ok(c));i++)c={p:type==='routine'?'fish':rnd(CFG.produits),pal:rnd(PALS)};
+ let c;for(let i=0;i<300&&!(c&&ok(c));i++)c=cat?{cat:true,p:cat[0].slug,pal:rnd(PALS)}:{p:type==='routine'?'fish':rnd(CFG.produits),pal:rnd(PALS)};
  c.theme=rnd(THEMES.filter(x=>!hist.filter(h=>h.theme).slice(-3).some(h=>h.theme===x)));
- if(type==='duo')c.p2=rnd(CFG.produits.filter(x=>x!==c.p));
+ if(type==='duo'&&!cat)c.p2=rnd(CFG.produits.filter(x=>x!==c.p));
+ if(cat)fs.writeFileSync(path.join(D,'assets','cat.js'),'window.CATP='+JSON.stringify(cat)+';');
  const dir=`${date}_${type}_${c.p}`,out=path.join(D,'carrousels',dir);
  fs.rmSync(out,{recursive:true,force:true});fs.mkdirSync(out,{recursive:true});
  const b=await puppeteer.launch({headless:true,executablePath:process.env.CHROME||undefined,args:['--no-sandbox','--disable-setuid-sandbox','--allow-file-access-from-files']});
  const pg=await b.newPage();await pg.setViewport({width:1080,height:1350});
- await pg.goto('file://'+path.join(D,'assets','slides.html').split(path.sep).join('/')+`?type=${type}&p=${c.p}&pal=${c.pal}&theme=${c.theme}${c.p2?'&p2='+c.p2:''}`);await pg.evaluate(()=>document.fonts.ready);
+ await pg.goto('file://'+path.join(D,'assets',cat?'cslides.html':'slides.html').split(path.sep).join('/')+`?type=${type}&p=${c.p}&pal=${c.pal}&theme=${c.theme}${c.p2?'&p2='+c.p2:''}`);await pg.evaluate(()=>document.fonts.ready);
  const n=await pg.evaluate(()=>N),medias=[];
  for(let i=0;i<n;i++){await pg.evaluate(i=>show(i),i);await pg.evaluate(()=>document.fonts.ready);const f=`${String(i+1).padStart(2,'0')}.jpg`;await pg.screenshot({path:path.join(out,f),type:'jpeg',quality:92});medias.push(`carrousels/${dir}/${f}`)}
  await b.close();
  hist.push({date,f:type,...c,fichier:dir});fs.writeFileSync(HIST,JSON.stringify(hist.slice(-60),null,1));
  // garde 14 jours de carrousels
  fs.readdirSync(path.join(D,'carrousels')).sort().slice(0,-14).forEach(f=>fs.rmSync(path.join(D,'carrousels',f),{recursive:true,force:true}));
- fs.writeFileSync(path.join(D,'post.json'),JSON.stringify({date,heure:CFG.heure,format:'carrousel',type,medias,produit:c.p,style:type,texte:CAP[type](PRODUCTS_NAME[c.p],POSTS[c.p],c.p2&&PRODUCTS_NAME[c.p2],c.p2&&POSTS[c.p2])},null,1));
+ fs.writeFileSync(path.join(D,'post.json'),JSON.stringify({date,heure:CFG.heure,format:'carrousel',type,medias,produit:c.p,style:type,texte:cat?catCaption(type,cat):CAP[type](PRODUCTS_NAME[c.p],POSTS[c.p],c.p2&&PRODUCTS_NAME[c.p2],c.p2&&POSTS[c.p2])},null,1));
  console.log('OK',dir,n,'slides');
 }
-// mode catalogue: la routine écrit cat_products.json (3 produits tirés au hasard dans Shopify: slug,name,brand,detail,price,imgUrl,foot).
-// Un jour vidéo sur deux (jamais 2 de suite) utilise un style catalogue: catalogue, magazine, neon, marque (1 produit) ou trio (3 produits).
+// légende catalogue: seulement les infos de la fiche, jamais de prix ni de lien (règle TikTok)
+function catCaption(type,L){
+ const a=L[0],b=L[1]||L[0],nb=p=>`${p.name} (${p.brand})`;
+ const t={edu:`3 choses à savoir sur ${nb(a)} : ce que dit la fiche, le format, les saveurs. Glisse pour tout voir.`,
+  chiffre:`Un chiffre, une phrase : ${nb(a)}. Glisse pour tout voir.`,quiz:`Quiz ${a.name} : 3 questions, glisse pour les réponses.`,
+  qr:`Vos questions sur ${nb(a)}, on répond en quelques slides. Glisse pour tout voir.`,
+  duo:`${a.name} ou ${b.name} ? On les met côte à côte : format, saveurs. Glisse pour tout voir.`,
+  routine:`La sélection du jour : ${L.slice(0,3).map(nb).join(', ')}. Glisse pour tout voir.`}[type];
+ return t+(a.foot&&/alimentaire/i.test(a.foot)?`\n\n${a.foot}`:'')+'\n\n#BoostNaturel'}// mode catalogue: la routine écrit cat_products.json (3 produits tirés au hasard dans Shopify: slug,name,brand,detail,price,imgUrl,foot).
+// Toutes les vidéos et tous les carrousels utilisent le catalogue (repli AllDeynn si le fichier manque). Vidéo = style: catalogue, magazine, neon, marque (1 produit) ou trio (3 produits).
 const CATF=path.join(D,'cat_products.json'),CATS={catalogue:['catalogue.html',12.5],magazine:['magazine.html',9],neon:['neon.html',9],trio:['trio.html',9],marque:['marque.html',9],flash:['flash.html',10.5],collage:['collage.html',9],split:['split.html',9],ticket:['ticket.html',9],ticker:['ticker.html',9],carte:['carte.html',9]};
 async function catProducts(){
  if(!fs.existsSync(CATF))return null;
@@ -97,8 +106,8 @@ async function catProducts(){
   fs.writeFileSync(path.join(D,'assets','cat',p.slug+'.jpg'),Buffer.from(await r.arrayBuffer()));p.img='cat/'+p.slug+'.jpg'}
  return l}
 (async()=>{
- if(FMT!=='video')return carousel(FMT);
- const cat=hist.length&&hist[hist.length-1].cat?null:await catProducts();
+ const cat=await catProducts();
+ if(FMT!=='video')return carousel(FMT,cat);
  let c,page,DUR,name;
  if(cat){
   const styles=Object.keys(CATS).filter(s=>(cat.length>=3||s!=='trio')&&!hist.filter(h=>h.cat).slice(-4).some(h=>h.s===s));

@@ -1,0 +1,97 @@
+<!doctype html><meta charset="utf-8"><style>
+@font-face{font-family:P;font-weight:500;src:url(p500.ttf)}
+@font-face{font-family:P;font-weight:600;src:url(p600.ttf)}
+@font-face{font-family:P;font-weight:700;src:url(p700.ttf)}
+@font-face{font-family:PF;font-style:italic;font-weight:400 900;src:url(PlayfairItalic.ttf)}
+html,body{margin:0;width:1080px;height:1350px;overflow:hidden;font-family:P;color:var(--ink)}
+body{position:relative;background:linear-gradient(var(--ebg0),var(--ebg1))}
+#tint{position:absolute;inset:0;opacity:.55}
+#brand{position:absolute;top:70px;left:80px;font:700 32px P;letter-spacing:5px;color:var(--acc)}
+#num{position:absolute;top:70px;right:80px;font:600 30px P;color:var(--ink2)}
+#main{position:absolute;left:80px;width:920px;top:170px;height:960px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+.lab{font:600 32px P;letter-spacing:8px;color:var(--acc);margin-bottom:28px}
+.big{font:italic 700 96px/1.08 PF,Georgia,serif}
+.t{font:700 76px/1.12 P}
+.body{font:500 46px/1.4 P;margin-top:34px}
+.row{font:600 50px/1.3 P;margin:14px 0}.row small{display:block;font:500 34px P;color:var(--ink2)}
+.q{font:italic 700 80px/1.12 PF,Georgia,serif}
+.chip{width:92px;height:92px;border-radius:50%;background:var(--ink);color:#fff;font:700 52px/92px P;margin-bottom:30px}
+.prod{mix-blend-mode:multiply;max-width:560px;max-height:560px;margin:30px 0}
+.th{display:flex;gap:30px;justify-content:center;margin-top:30px}.th img{height:230px;mix-blend-mode:multiply}
+.btn{margin-top:40px;padding:0 70px;height:110px;border-radius:55px;background:var(--ink);color:#fff;font:700 50px/110px P}
+.price{font:700 88px P;margin-top:10px}
+#foot{position:absolute;left:80px;width:920px;bottom:60px;text-align:center;font:500 25px/1.3 P;color:var(--ink2)}
+#sw{position:absolute;right:80px;bottom:200px;font:700 44px P;color:var(--acc)}
+/* thèmes visuels (param theme=): douce (défaut), bold, edito, pop, neon */
+body.th-bold{background:var(--ink);color:#fff}body.th-bold #tint{display:none}
+.th-bold #brand,.th-bold #num,.th-bold .lab,.th-bold #foot,.th-bold .row small{color:var(--bg1)}.th-bold .t,.th-bold .big,.th-bold .q,.th-bold .row,.th-bold .price{color:#fff}
+.th-bold .big{font:700 118px/1.02 P;text-transform:uppercase}.th-bold .chip{background:var(--acc)}.th-bold .btn{background:var(--bg0);color:var(--ink)}.th-bold #sw{color:var(--bg0)}
+.th-bold .prod,.th-bold .th img{mix-blend-mode:normal;background:#fff;border-radius:34px;padding:26px;box-sizing:border-box}.th-bold .th img{height:260px}
+body.th-edito{background:#FBF6EE}body.th-edito #tint{display:none}
+body.th-edito:before{content:"";position:absolute;inset:36px;border:3px solid var(--ink);pointer-events:none}
+.th-edito .big,.th-edito .t,.th-edito .row{font-family:PF,Georgia,serif;font-style:italic}.th-edito .lab{font-weight:700;letter-spacing:12px;color:var(--ink2)}
+.th-edito .lab:after{content:"";display:block;width:120px;border-top:3px solid var(--ink);margin:22px auto 0}.th-edito #brand{left:90px;top:80px}.th-edito #num{right:90px;top:80px}
+body.th-pop{background:var(--bg1)}body.th-pop #tint{display:none}
+.th-pop #main{left:60px;width:960px;top:150px;height:1000px;background:#fff;border:6px solid var(--ink);border-radius:44px;box-shadow:16px 16px 0 var(--ink);box-sizing:border-box;padding:40px 60px}
+.th-pop .chip{background:var(--acc)}.th-pop .btn{box-shadow:8px 8px 0 var(--acc)}.th-pop .prod,.th-pop .th img{max-height:420px}.th-pop #brand{color:var(--ink);top:56px;left:70px}.th-pop #num{top:56px;right:70px}.th-pop #sw{bottom:100px;right:90px}
+body.th-neon{background:#0a0a14;color:#fff}body.th-neon #tint{display:none}
+.th-neon #brand{color:#00e5ff;text-shadow:0 0 14px #00e5ff}.th-neon #num,.th-neon #foot,.th-neon .row small{color:#9aa0d8}
+.th-neon .lab{color:#00e5ff;text-shadow:0 0 16px #00e5ff}.th-neon .big,.th-neon .t,.th-neon .q,.th-neon .price,.th-neon .row{color:#fff;text-shadow:0 0 22px #ff2d95}
+.th-neon .big{font:700 104px/1.04 P;text-transform:uppercase}.th-neon .chip{background:#ff2d95;box-shadow:0 0 30px #ff2d95}.th-neon .btn{background:#00e5ff;color:#0a0a14;box-shadow:0 0 34px #00e5ff}.th-neon #sw{color:#ff2d95;text-shadow:0 0 14px #ff2d95}
+.th-neon .prod,.th-neon .th img{mix-blend-mode:normal;background:#fff;border-radius:30px;padding:24px;box-sizing:border-box;box-shadow:0 0 0 5px #00e5ff,0 0 50px 6px #00e5ff88}
+</style>
+<div id="tint"></div><div id="brand">boostnaturel.com</div><div id="num"></div>
+<div id="main"></div><div id="sw">→</div><div id="foot"></div>
+<script src="cat.js"></script><script>
+const $=id=>document.getElementById(id);
+const PALS={lilas:['#E4D8F7','#A48BD0','#3B2466','#8A6BC8','#4a3a70','#FBF6EE','#EFE4D4'],menthe:['#DDF1E6','#8CC8A8','#1F4A38','#3E8E6A','#2f5d49','#F4FAF6','#E3EFE7'],rose:['#FBE1E8','#E79BB0','#6A2140','#C0527A','#7a3552','#FFF5F7','#F6E3E8'],bleu:['#DCE8F8','#86A8DC','#1D3566','#4A73C0','#2d467a','#F3F7FD','#E1EAF6'],sable:['#F6EBD9','#D9B98A','#4A3418','#A8782F','#5c4528','#FBF6EE','#EFE4D4']};
+const PAL=PALS[new URLSearchParams(location.search).get('pal')]||PALS.lilas;['bg0','bg1','ink','acc','ink2','ebg0','ebg1'].forEach((k,i)=>document.documentElement.style.setProperty('--'+k,PAL[i]));
+
+// carrousels catalogue: tout le texte vient des fiches Shopify (cat.js = window.CATP), rien d'inventé; une diapo sans donnée est sautée
+const QS=new URLSearchParams(location.search),TYPE=QS.get('type')||'edu',L=CATP,c=L[0],c2=L[1]||L[0];
+document.body.className='th-'+(QS.get('theme')||'douce');
+const IM=p=>`<img class="prod" src="${p.img}">`;
+const sent=(s,n)=>(s||'').replace(/\s+/g,' ').split(/(?<=[.!?])\s+/).slice(0,n).join(' ').trim();
+const list=a=>(a||[]).join(' · ');
+const GEN='Voir chaque fiche produit sur boostnaturel.com pour les précautions d’usage.';
+const cta=p=>({k:'cta',p,foot:p.foot});
+function build(type){
+ let s;
+ if(type==='edu')s=[{k:'cover',lab:'3 CHOSES À SAVOIR',t:c.name,sub:c.brand,p:c,foot:c.foot},
+  c.desc&&{k:'text',lab:'CE QUE DIT LA FICHE',t:'',body:sent(c.desc,2),foot:c.foot},
+  {k:'text',lab:'LE FORMAT',t:c.detail,body:c.forme||'',foot:c.foot},
+  (c.saveurs||[]).length&&{k:'text',lab:'LES SAVEURS',t:'',body:list(c.saveurs),foot:c.foot},
+  (c.moments||[]).length&&{k:'text',lab:'LE MOMENT',t:'',body:list(c.moments),foot:c.foot},cta(c)];
+ else if(type==='chiffre')s=[{k:'cover',lab:'UN CHIFFRE',t:c.detail.split(' · ').pop(),sub:c.name,p:c,foot:c.foot},
+  (c.saveurs||[]).length>1&&{k:'text',lab:'LES SAVEURS',t:c.saveurs.length+' saveurs',body:list(c.saveurs),foot:c.foot},
+  c.desc&&{k:'text',lab:'EN UNE PHRASE',t:'',body:sent(c.desc,1),foot:c.foot},cta(c)];
+ else if(type==='quiz')s=[{k:'cover',lab:'QUIZ',t:c.name,sub:'3 questions, glisse pour les réponses',p:c,foot:c.foot},
+  {k:'qa',chip:'?',q:'Quelle est la marque ?',a:'',foot:c.foot},{k:'qa',chip:'R',q:c.brand,a:c.name,foot:c.foot},
+  {k:'qa',chip:'?',q:'Quel est le format ?',a:'',foot:c.foot},{k:'qa',chip:'R',q:c.detail,a:'',foot:c.foot},
+  ...((c.saveurs||[]).length>1?[{k:'qa',chip:'?',q:'Combien de saveurs ?',a:'',foot:c.foot},{k:'qa',chip:'R',q:c.saveurs.length+' saveurs',a:list(c.saveurs),foot:c.foot}]:[]),cta(c)];
+ else if(type==='qr')s=[{k:'cover',lab:'VOS QUESTIONS',t:c.name,sub:'on répond en quelques slides',p:c,foot:c.foot},
+  c.desc&&{k:'qa',q:'C’est quoi ?',a:sent(c.desc,2),foot:c.foot},
+  {k:'qa',q:'Quel format ?',a:c.detail,foot:c.foot},
+  (c.saveurs||[]).length&&{k:'qa',q:'Quelles saveurs ?',a:list(c.saveurs),foot:c.foot},
+  (c.moments||[]).length&&{k:'qa',q:'Quand ?',a:list(c.moments),foot:c.foot},cta(c)];
+ else if(type==='duo')s=[{k:'moment',lab:'CÔTE À CÔTE',ps:[c,c2],rows:[[c.name,c.brand],[c2.name,c2.brand]],foot:GEN},
+  {k:'moment',lab:'LE FORMAT',ps:[c,c2],rows:[[c.name,c.detail],[c2.name,c2.detail]],foot:GEN},
+  {k:'moment',lab:'LES SAVEURS',ps:[c,c2],rows:[[c.name,list(c.saveurs)||'—'],[c2.name,list(c2.saveurs)||'—']],foot:GEN},
+  {k:'moment',lab:'LE PRIX',ps:[c,c2],rows:[[c.name,c.price],[c2.name,c2.price]],foot:GEN},{k:'cta',gen:true,foot:GEN}];
+ else s=[{k:'moment',lab:'LA SÉLECTION DU JOUR',ps:L.slice(0,3),rows:L.slice(0,3).map(p=>[p.name,p.brand]),foot:GEN},
+  ...L.slice(0,3).map(p=>({k:'cover',lab:p.brand.toUpperCase(),t:p.name,sub:p.detail,p,foot:p.foot})),{k:'cta',gen:true,foot:GEN}];
+ return s.filter(Boolean)}
+const SL=build(TYPE),N=SL.length;
+function show(i){
+ const s=SL[i],m=$('main');let h='';
+ if(s.k==='cover')h=`<div class="lab">${s.lab}</div><div class="big" style="font-size:${s.t.length>26?72:96}px">${s.t}</div>${s.p?IM(s.p):''}<div class="body" style="margin-top:0">${s.sub||''}</div>`;
+ if(s.k==='text')h=`<div class="lab">${s.lab}</div>${s.t?`<div class="t">${s.t}</div>`:''}<div class="body">${s.body}</div>`;
+ if(s.k==='qa')h=`<div class="chip">${s.chip||'?'}</div><div class="q">${s.q}</div><div class="body" style="font-size:${s.a.length>180?40:46}px">${s.a}</div>`;
+ if(s.k==='moment')h=`<div class="lab">${s.lab}</div><div class="th">${s.ps.map(p=>`<img src="${p.img}">`).join('')}</div>${s.rows.map(r=>`<div class="row">${r[0]}<small>${r[1]}</small></div>`).join('')}`;
+ if(s.k==='cta')h=s.gen?`<div class="big">La sélection du jour</div><div class="body">Fiches, doses et précautions sur le site</div><div class="btn">boostnaturel.com</div>`
+  :`${IM(s.p)}<div class="t" style="font-size:64px">${s.p.name}</div><div class="price">${s.p.price}</div><div class="btn">boostnaturel.com</div>`;
+ m.innerHTML=h;$('foot').textContent=s.foot;$('num').textContent=(i+1)+' / '+N;$('sw').style.display=i<N-1?'block':'none';
+ $('tint').style.background=`linear-gradient(${PAL[0]},${PAL[1]})`;
+}
+show(0);
+</script>
