@@ -99,7 +99,7 @@ async function catProducts(){
  const cat=hist.length&&hist[hist.length-1].cat?null:await catProducts();
  let c,page,DUR,name;
  if(cat){
-  const styles=Object.keys(CATS).filter(s=>(cat.length>=3||s!=='trio')&&!hist.slice(-2).some(h=>h.s===s));
+  const styles=Object.keys(CATS).filter(s=>(cat.length>=3||s!=='trio')&&!hist.filter(h=>h.cat).slice(-4).some(h=>h.s===s));
   c={cat:true,p:cat[0].slug,s:rnd(styles),pal:rnd(PALS),hook:0,m:rnd(music)};[page,DUR]=CATS[c.s];
   fs.writeFileSync(path.join(D,'assets','product.js'),'window.CP='+JSON.stringify(cat[0])+';');
   fs.writeFileSync(path.join(D,'assets','trio.js'),'window.CPS='+JSON.stringify(cat.slice(0,3))+';');
