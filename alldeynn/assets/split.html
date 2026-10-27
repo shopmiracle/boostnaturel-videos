@@ -1,0 +1,27 @@
+<!doctype html><meta charset="utf-8"><style>
+body{background:var(--bg0)}
+#dark{position:absolute;inset:0;background:var(--ink)}
+#br{left:40px;width:1000px;top:230px;text-align:center;font:700 150px/1 P;color:var(--bg0);text-transform:uppercase;word-break:break-word}
+#kick{left:0;width:1080px;top:110px;text-align:center;font:600 36px P;letter-spacing:12px;color:var(--bg1);text-transform:uppercase}
+#ring{left:190px;top:560px;width:700px;height:700px;border-radius:50%;background:#fff}
+#box{left:215px;top:585px;width:650px;height:650px;border-radius:50%;overflow:hidden;mix-blend-mode:multiply}#prod{width:100%;height:100%;object-fit:contain;padding:40px;box-sizing:border-box}
+#nm{left:60px;width:960px;top:1330px;text-align:center;font:700 82px/1.08 P;color:var(--ink)}
+#dt{left:80px;width:920px;top:1530px;text-align:center;font:500 42px/1.25 P;color:var(--ink2)}
+#pr{left:340px;top:1650px;width:400px;height:120px;border-radius:60px;background:var(--ink);color:#fff;font:700 62px/120px P;text-align:center}
+#foot{position:absolute;left:60px;width:960px;bottom:30px;text-align:center;font:500 22px/1.3 P;color:var(--ink2)}
+</style>
+<div id="dark"></div><div class="a" id="kick">Sélection du jour</div><div class="a" id="br"></div>
+<div class="a" id="ring"></div><div class="a" id="box"><img id="prod"></div>
+<div class="a" id="nm"></div><div class="a" id="dt"></div><div class="a" id="pr"></div><div id="foot"></div>
+<script src="common.js"></script><script src="product.js"></script><script>
+$('prod').src=CP.img;$('br').textContent=CP.brand;$('nm').textContent=CP.name;$('dt').textContent=CP.detail;$('pr').textContent=CP.price;$('foot').textContent=CP.foot;
+function render(t){
+ const w=e(t/1.1),y=1400*w; // diagonale qui descend
+ $('dark').style.clipPath=`polygon(0 0,100% 0,100% ${(y-220)/19.2}%,0 ${y/19.2}%)`;
+ IN($('kick'),t,.5,-30);IN($('br'),t,.8,0,.8,-500);
+ const r=e((t-1.2)/.7);$('ring').style.opacity=r;$('ring').style.transform=`scale(${.2+r*.8})`;
+ const k=e((t-1.5)/.9);$('box').style.opacity=k;$('box').style.transform=`translateY(${(1-k)*400}px) rotate(${(1-k)*20+Math.sin(t*1.3)*1.2}deg)`;
+ IN($('nm'),t,2.6,40);IN($('dt'),t,3.4,30);const p=e((t-4.2)/.5);$('pr').style.opacity=p;$('pr').style.transform=`scale(${.5+p*.5})`;
+}
+render(0);
+</script>
