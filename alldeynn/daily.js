@@ -86,7 +86,7 @@ async function carousel(type){
 }
 // mode catalogue: la routine écrit cat_products.json (3 produits tirés au hasard dans Shopify: slug,name,brand,detail,price,imgUrl,foot).
 // Un jour vidéo sur deux (jamais 2 de suite) utilise un style catalogue: catalogue, magazine, neon, marque (1 produit) ou trio (3 produits).
-const CATF=path.join(D,'cat_products.json'),CATS={catalogue:['catalogue.html',12.5],magazine:['magazine.html',9],neon:['neon.html',9],trio:['trio.html',9],marque:['marque.html',9]};
+const CATF=path.join(D,'cat_products.json'),CATS={catalogue:['catalogue.html',12.5],magazine:['magazine.html',9],neon:['neon.html',9],trio:['trio.html',9],marque:['marque.html',9],flash:['flash.html',10.5],collage:['collage.html',9]};
 async function catProducts(){
  if(!fs.existsSync(CATF))return null;
  const l=JSON.parse(fs.readFileSync(CATF,'utf8'));if(!Array.isArray(l)||!l.length)return null;
