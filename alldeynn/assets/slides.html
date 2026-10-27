@@ -22,12 +22,29 @@ body{position:relative;background:linear-gradient(var(--ebg0),var(--ebg1))}
 .price{font:700 88px P;margin-top:10px}
 #foot{position:absolute;left:80px;width:920px;bottom:60px;text-align:center;font:500 25px/1.3 P;color:var(--ink2)}
 #sw{position:absolute;right:80px;bottom:200px;font:700 44px P;color:var(--acc)}
+/* thèmes visuels (param theme=): douce (défaut), bold, edito, pop, neon */
+body.th-bold{background:var(--ink);color:#fff}body.th-bold #tint{display:none}
+.th-bold #brand,.th-bold #num,.th-bold .lab,.th-bold #foot,.th-bold .row small{color:var(--bg1)}.th-bold .t,.th-bold .big,.th-bold .q,.th-bold .row,.th-bold .price{color:#fff}
+.th-bold .big{font:700 118px/1.02 P;text-transform:uppercase}.th-bold .chip{background:var(--acc)}.th-bold .btn{background:var(--bg0);color:var(--ink)}.th-bold #sw{color:var(--bg0)}
+.th-bold .prod,.th-bold .th img{mix-blend-mode:normal;background:#fff;border-radius:34px;padding:26px;box-sizing:border-box}.th-bold .th img{height:260px}
+body.th-edito{background:#FBF6EE}body.th-edito #tint{display:none}
+body.th-edito:before{content:"";position:absolute;inset:36px;border:3px solid var(--ink);pointer-events:none}
+.th-edito .big,.th-edito .t,.th-edito .row{font-family:PF,Georgia,serif;font-style:italic}.th-edito .lab{font-weight:700;letter-spacing:12px;color:var(--ink2)}
+.th-edito .lab:after{content:"";display:block;width:120px;border-top:3px solid var(--ink);margin:22px auto 0}.th-edito #brand{left:90px;top:80px}.th-edito #num{right:90px;top:80px}
+body.th-pop{background:var(--bg1)}body.th-pop #tint{display:none}
+.th-pop #main{left:60px;width:960px;top:150px;height:1000px;background:#fff;border:6px solid var(--ink);border-radius:44px;box-shadow:16px 16px 0 var(--ink);box-sizing:border-box;padding:40px 60px}
+.th-pop .chip{background:var(--acc)}.th-pop .btn{box-shadow:8px 8px 0 var(--acc)}.th-pop .prod,.th-pop .th img{max-height:420px}.th-pop #brand{color:var(--ink);top:56px;left:70px}.th-pop #num{top:56px;right:70px}.th-pop #sw{bottom:100px;right:90px}
+body.th-neon{background:#0a0a14;color:#fff}body.th-neon #tint{display:none}
+.th-neon #brand{color:#00e5ff;text-shadow:0 0 14px #00e5ff}.th-neon #num,.th-neon #foot,.th-neon .row small{color:#9aa0d8}
+.th-neon .lab{color:#00e5ff;text-shadow:0 0 16px #00e5ff}.th-neon .big,.th-neon .t,.th-neon .q,.th-neon .price,.th-neon .row{color:#fff;text-shadow:0 0 22px #ff2d95}
+.th-neon .big{font:700 104px/1.04 P;text-transform:uppercase}.th-neon .chip{background:#ff2d95;box-shadow:0 0 30px #ff2d95}.th-neon .btn{background:#00e5ff;color:#0a0a14;box-shadow:0 0 34px #00e5ff}.th-neon #sw{color:#ff2d95;text-shadow:0 0 14px #ff2d95}
+.th-neon .prod,.th-neon .th img{mix-blend-mode:normal;background:#fff;border-radius:30px;padding:24px;box-sizing:border-box;box-shadow:0 0 0 5px #00e5ff,0 0 50px 6px #00e5ff88}
 </style>
 <div id="tint"></div><div id="brand">boostnaturel.com</div><div id="num"></div>
 <div id="main"></div><div id="sw">→</div><div id="foot"></div>
 <script src="products.js"></script><script src="posts_data.js"></script><script>
 const $=id=>document.getElementById(id);
-const TYPE=QS.get('type')||'edu',P=PRODUCTS;
+const TYPE=QS.get('type')||'edu',P=PRODUCTS;document.body.className='th-'+(QS.get('theme')||'douce');
 const IMG=k=>`<img class="prod" src="${P[k].img}">`;
 const GEN='Compléments alimentaires : respecter la dose indiquée sur chaque emballage. Avis d’un professionnel de santé en cas de traitement, grossesse ou allaitement.';
 const lines=s=>s.replace(/<br>/g,' · ');

@@ -7,6 +7,7 @@ const PRODUCTS_NAME={fish:'Collarose Fish',caps:'Collarose Caps',vita:'Vitarose'
 const D=__dirname,CFG=JSON.parse(fs.readFileSync(path.join(D,'config.json'),'utf8'));
 const FF=process.env.FFMPEG||'ffmpeg',FPS=30;
 const STYLES={pub:['pub.html',15],gestes:['steps.html',16],edito:['edito.html',14]},PALS=['lilas','menthe','rose','bleu','sable'];
+const THEMES=['douce','bold','edito','pop','neon'];
 const rnd=a=>a[Math.floor(Math.random()*a.length)];
 const parisDate=(add=0)=>{const d=new Date(Date.now()+add*864e5);return new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Paris'}).format(d)};
 const date=process.argv[2]||parisDate(1);
@@ -69,12 +70,13 @@ Object.assign(CAP,CAP2);
 async function carousel(type){
  const l3=hist.slice(-3),ok=c=>!hist.slice(-2).some(h=>h.p===c.p)&&!l3.some(h=>h.pal===c.pal);
  let c;for(let i=0;i<300&&!(c&&ok(c));i++)c={p:type==='routine'?'fish':rnd(CFG.produits),pal:rnd(PALS)};
+ c.theme=rnd(THEMES.filter(x=>!hist.filter(h=>h.theme).slice(-3).some(h=>h.theme===x)));
  if(type==='duo')c.p2=rnd(CFG.produits.filter(x=>x!==c.p));
  const dir=`${date}_${type}_${c.p}`,out=path.join(D,'carrousels',dir);
  fs.rmSync(out,{recursive:true,force:true});fs.mkdirSync(out,{recursive:true});
  const b=await puppeteer.launch({headless:true,executablePath:process.env.CHROME||undefined,args:['--no-sandbox','--disable-setuid-sandbox','--allow-file-access-from-files']});
  const pg=await b.newPage();await pg.setViewport({width:1080,height:1350});
- await pg.goto('file://'+path.join(D,'assets','slides.html').split(path.sep).join('/')+`?type=${type}&p=${c.p}&pal=${c.pal}${c.p2?'&p2='+c.p2:''}`);await pg.evaluate(()=>document.fonts.ready);
+ await pg.goto('file://'+path.join(D,'assets','slides.html').split(path.sep).join('/')+`?type=${type}&p=${c.p}&pal=${c.pal}&theme=${c.theme}${c.p2?'&p2='+c.p2:''}`);await pg.evaluate(()=>document.fonts.ready);
  const n=await pg.evaluate(()=>N),medias=[];
  for(let i=0;i<n;i++){await pg.evaluate(i=>show(i),i);await pg.evaluate(()=>document.fonts.ready);const f=`${String(i+1).padStart(2,'0')}.jpg`;await pg.screenshot({path:path.join(out,f),type:'jpeg',quality:92});medias.push(`carrousels/${dir}/${f}`)}
  await b.close();
