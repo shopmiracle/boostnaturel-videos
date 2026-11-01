@@ -49,5 +49,15 @@
   "pal": "bleu",
   "theme": "bold",
   "fichier": "2026-11-03_chiffre_gold-whey-milk-chocolate-500g"
+ },
+ {
+  "date": "2026-11-04",
+  "cat": true,
+  "p": "vitamin-d-3-1000-iu-high-poten",
+  "s": "collage",
+  "pal": "rose",
+  "hook": 0,
+  "m": "gen_velours.m4a",
+  "fichier": "2026-11-04_vitamin-d-3-1000-iu-high-poten_collage_rose.mp4"
  }
 ]
