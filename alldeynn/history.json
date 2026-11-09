@@ -96,5 +96,62 @@
   "pal": "bleu",
   "theme": "neon",
   "fichier": "2026-11-08_edu_animal-whey-cookies-cream-2270"
+ },
+ {
+  "date": "2026-11-10",
+  "f": "routine",
+  "cat": true,
+  "p": "super-potency-vitamin-d3-50mcg",
+  "pal": "lilas",
+  "theme": "douce",
+  "fichier": "2026-11-10_routine_super-potency-vitamin-d3-50mcg"
+ },
+ {
+  "date": "2026-11-11",
+  "cat": true,
+  "p": "collagen-coconut-180-caps",
+  "s": "ticker",
+  "pal": "menthe",
+  "hook": 0,
+  "m": "cc0_Meditating_Beat.mp3",
+  "fichier": "2026-11-11_collagen-coconut-180-caps_ticker_menthe.mp4"
+ },
+ {
+  "date": "2026-11-12",
+  "f": "chiffre",
+  "cat": true,
+  "p": "animal-whey-cookies-cream-2270",
+  "pal": "sable",
+  "theme": "bold",
+  "fichier": "2026-11-12_chiffre_animal-whey-cookies-cream-2270"
+ },
+ {
+  "date": "2026-11-13",
+  "cat": true,
+  "p": "carbo-multi-max-allnutrition-g",
+  "s": "trio",
+  "pal": "menthe",
+  "hook": 0,
+  "m": "cc0_Wisdom_in_the_Sun.mp3",
+  "fichier": "2026-11-13_carbo-multi-max-allnutrition-g_trio_menthe.mp4"
+ },
+ {
+  "date": "2026-11-14",
+  "f": "quiz",
+  "cat": true,
+  "p": "r1-whey-blend-cookies-creme-88",
+  "pal": "lilas",
+  "theme": "pop",
+  "fichier": "2026-11-14_quiz_r1-whey-blend-cookies-creme-88"
+ },
+ {
+  "date": "2026-11-15",
+  "cat": true,
+  "p": "pre-kaged-sport-mango-lime-266",
+  "s": "collage",
+  "pal": "rose",
+  "hook": 0,
+  "m": "gen_aube.m4a",
+  "fichier": "2026-11-15_pre-kaged-sport-mango-lime-266_collage_rose.mp4"
  }
 ]
