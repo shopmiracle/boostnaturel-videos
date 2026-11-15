@@ -153,5 +153,71 @@
   "hook": 0,
   "m": "gen_aube.m4a",
   "fichier": "2026-11-15_pre-kaged-sport-mango-lime-266_collage_rose.mp4"
+ },
+ {
+  "date": "2026-11-16",
+  "cat": true,
+  "p": "r1-whey-blend-frozen-banana-87",
+  "s": "ticker",
+  "pal": "rose",
+  "hook": 0,
+  "m": "cc0_Energizing.mp3",
+  "fichier": "2026-11-16_r1-whey-blend-frozen-banana-87_ticker_rose.mp4"
+ },
+ {
+  "date": "2026-11-17",
+  "f": "qr",
+  "cat": true,
+  "p": "vitamin-d-3-with-coconut-oil-2",
+  "pal": "bleu",
+  "theme": "edito",
+  "fichier": "2026-11-17_qr_vitamin-d-3-with-coconut-oil-2"
+ },
+ {
+  "date": "2026-11-18",
+  "cat": true,
+  "p": "premium-collagen-300g",
+  "s": "neon",
+  "pal": "lilas",
+  "hook": 0,
+  "m": "cc0_Adding_the_Sun.mp3",
+  "fichier": "2026-11-18_premium-collagen-300g_neon_lilas.mp4"
+ },
+ {
+  "date": "2026-11-19",
+  "f": "routine",
+  "cat": true,
+  "p": "animal-whey-cookies-cream-2270",
+  "pal": "menthe",
+  "theme": "douce",
+  "fichier": "2026-11-19_routine_animal-whey-cookies-cream-2270"
+ },
+ {
+  "date": "2026-11-20",
+  "cat": true,
+  "p": "loaded-pre-sour-punch-blue-raz",
+  "s": "marque",
+  "pal": "rose",
+  "hook": 0,
+  "m": "gen_solaire.m4a",
+  "fichier": "2026-11-20_loaded-pre-sour-punch-blue-raz_marque_rose.mp4"
+ },
+ {
+  "date": "2026-11-21",
+  "f": "chiffre",
+  "cat": true,
+  "p": "carbonox-olimp-nutrition",
+  "pal": "sable",
+  "theme": "neon",
+  "fichier": "2026-11-21_chiffre_carbonox-olimp-nutrition"
+ },
+ {
+  "date": "2026-11-22",
+  "f": "quiz",
+  "cat": true,
+  "p": "vitamin-d-3-5000-iu-chewable-1",
+  "pal": "lilas",
+  "theme": "bold",
+  "fichier": "2026-11-22_quiz_vitamin-d-3-5000-iu-chewable-1"
  }
 ]
